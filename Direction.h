@@ -1,4 +1,5 @@
 #if !defined(DIRECTION_H)
+#if !defined(DIRECTION_H)
 #define DIRECTION_H
 
 #include <glm/glm.hpp>
@@ -18,12 +19,14 @@ class Direction
  public:
   Direction(void);
   Direction(vec3 dir);
+  Direction(float x, float y, float z);
   virtual ~Direction();
   vec3 getDir(void);
+  void setDir(vec3 dir);
   float x(void);
   float y(void);
   float z(void);
-  Direction* mult(float t);
+  void mult(float t, Direction &result);
 };
 
 

@@ -3,6 +3,7 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <math.h>
 
 typedef glm::mat3 mat3 ;
 typedef glm::mat4 mat4 ; 
@@ -17,6 +18,7 @@ class Point
   
  public:
   Point(void);
+  Point(vec3 pos);
   Point(float x, float y, float z);
   virtual ~Point(void);
   vec3 getPoint(void);
@@ -24,6 +26,7 @@ class Point
   float y(void);
   float z(void);
   Point* add(Direction* dir);
+  float dist(Point* pt);
   //Direction* operator-(const Point* pt);
 };
 

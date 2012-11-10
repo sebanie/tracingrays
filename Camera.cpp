@@ -14,12 +14,15 @@ void Camera::generateRay(Sample &sample, Ray* ray)
   float halfheight = ((float) _height) / 2.0;
   
   float alpha = (tan(_fovx / 2)) * ((j - halfwidth) / halfwidth);
-  float beta = (tan(glm::radians(_fovy) / 2)) * ((halfheight - i) / halfheight);
+  float beta = (tan(_fovy / 2)) * ((halfheight - i) / halfheight);
 
   vec3 direction = glm::normalize((alpha * u) + (beta * v) - w);
 
-  ray->setPoint(_lookfrom);
-  ray->setDir(direction);
+  Point eye = Point(_lookfrom.x, _lookfrom.y, _lookfrom.z);
+  Direction dir = Direction(direction);
+
+  ray->setPoint(eye);
+  ray->setDir(dir);
   ray->setTMIN(0.0001);
   ray->setTMAX(10000);
   
@@ -32,10 +35,13 @@ Camera::Camera(vec3 lookfrom, vec3 lookat, vec3 up, float fovy, int height, int 
   _lookfrom = lookfrom;
   _lookat = lookat;
   _up = up;
-  _fovy = fovy;
-  _fovx = fovy;
+  _fovy = glm::radians(fovy);
   _height = height;
   _width = width;
+
+  float z = (1 / tan(_fovy / 2.0)) * ((float) height / 2.0);
+  //check for z==0
+  _fovx = 2 * atan(((float) width / 2.0) / z);
 }
 
 Camera::Camera(void)

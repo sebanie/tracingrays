@@ -2,7 +2,11 @@
 
 Point::Point(void)
 {
-  mypoint = vec3(0, 0, 0);
+
+}
+
+Point::Point(vec3 pos) {
+  mypoint = pos;
 }
 
 Point::Point(float x, float y, float z) {
@@ -25,11 +29,16 @@ float Point::z(void) {
   return mypoint.z;
 }
 
-Point* Point::mult(Direction* dir) {
+void Point::add(Direction* dir, Point &result) {
   float newx = x() + dir->x();
   float newy = y() + dir->y();
   float newz = z() + dir->z();
-  return new Direction(newx, newy, newz);
+  result.setPoint(newx, newy, newz);
+}
+
+float Point::dist(Point* pt)
+{
+  return glm::distance(mypoint, pt->getPoint());
 }
 
 Point::~Point() {
