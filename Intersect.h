@@ -1,6 +1,7 @@
 #if !defined(INTERSECT_H)
 #define INTERSECT_H
 
+class Shape;
 #include <vector>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -8,6 +9,8 @@
 #include <iostream>
 #include <string>
 #include "Point.h"
+#include "Shape.h"
+#include "Direction.h"
 
 using namespace std;
 typedef glm::mat3 mat3 ;
@@ -21,28 +24,33 @@ class Intersect{
  private:
   Point position;
   Direction normal;
-  Shape *shape;
+  Shape* shape;
   bool hit;
+  float t;
  public:
   Intersect(){
     position = Point(0.0, 0.0, 0.0);
     normal = Direction(0.0, 0.0, 0.0);
-    *shape = NULL;
+    shape = NULL;
     hit = false;
   }
-  Intersect(Point pos, Direction norm, Shape *s){
+  Intersect(Point pos, Direction norm, Shape *s, float tVal){
     position = pos;
     normal = norm;
-    *shape = *s;
+    t = tVal;
+    shape = s;
     hit = true;
   }
-  Point position(){
+  Point getPosition(){
     return position;
   }
-  Direction normal(){
+  Direction getNormal(){
     return normal;
   }
-  Shape* shape(){
+  float getT(){
+    return t;
+  }
+  Shape* getShape(){
     return shape;
   }
   bool isHit(){
@@ -51,3 +59,4 @@ class Intersect{
 };
 
 #endif
+

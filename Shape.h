@@ -8,7 +8,7 @@
 using namespace std;
 
 class Shape{
-  Color bgColor = Color(0.0,1.0,0.0);
+  Color bgColor;
  protected:
   Color diffuse, specular, emission;
   float shininess;
@@ -20,16 +20,17 @@ class Shape{
     shininess = shine;
   }
  public:
-  Color diffuse(){
+  Shape(){bgColor = Color(0.0, 1.0, 0.0);}
+  Color getDiffuse(){
     return diffuse;
   }
-  Color specular(){
+  Color getSpecular(){
     return specular;
   }
-  Color emission(){
+  Color getEmission(){
     return emission;
   }
-  float shininess(){
+  float getShininess(){
   }
   virtual Intersect intersect(Ray r){
     return Intersect();

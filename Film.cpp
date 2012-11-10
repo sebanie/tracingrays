@@ -7,10 +7,13 @@ int sceneWidth = 200;
 
 Film::Film(){
   pixelData = vector<vector<Color> >(sceneHeight,
-				    vector<Color>(sceneWidth, Color(1,0,0)));
+				    vector<Color>(sceneWidth, Color(1,0,1)));
 }
 Color Film::getPixel(int x, int y){
   return pixelData[y][x];
+}
+void Film::put(Sample pixel, Color pixelColor){
+  pixelData[pixel.y()][pixel.x()] = pixelColor;
 }
 void Film::output(string path){
   int maxIntensity = 255;

@@ -1,5 +1,4 @@
 #if !defined(DIRECTION_H)
-#if !defined(DIRECTION_H)
 #define DIRECTION_H
 
 #include <glm/glm.hpp>

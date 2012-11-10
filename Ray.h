@@ -4,9 +4,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <math.h>
+#include "Point.h"
+#include "Direction.h"
 
-typedef glm::mat3 mat3 ;
-typedef glm::mat4 mat4 ; 
 typedef glm::vec3 vec3 ; 
 typedef glm::vec4 vec4 ; 
 
@@ -25,7 +25,7 @@ class Ray
   void setDir(Direction dir);
   void setTMIN(float tmin);
   void setTMAX(float tmax);
-  vec3 getPoint(void);
+  vec3 getPos(void);
   vec3 getDir(void);
   float getTMIN(void);
   float getTMAX(void);

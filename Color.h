@@ -15,19 +15,22 @@ class Color{
  private:
   vec3 rgbValues;
  public:
+  Color(){
+    rgbValues = vec3(0.0, 0.0, 0.0);
+  }
   Color(float r, float g, float b){
     rgbValues = vec3(r,g,b);
   }
   vec3 getColors(){
     return rgbValues;
   }
-  float r(){
+  float getR(){
     return rgbValues[0];
   }
-  float g(){
+  float getG(){
     return rgbValues[1];
   }
-  float b(){
+  float getB(){
     return rgbValues[2];
   }
   Color operator=(const Color &param){

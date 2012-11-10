@@ -8,6 +8,7 @@
 #include "Color.h"
 #include <iostream>
 #include <string>
+#include "Sample.h"
 
 using namespace std;
 typedef glm::mat3 mat3 ;
@@ -21,8 +22,9 @@ class Film{
   vector<vector<Color> > pixelData;
  public:
   Film();
-  void put(vec2 pixel, Color c);
+  void put(Sample pixel, Color c);
   Color getPixel(int x, int y);
   void output(string path);
 };
 #endif
+

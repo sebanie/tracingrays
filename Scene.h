@@ -3,26 +3,33 @@
 
 #include <vector>
 #include "Film.h"
+#include "Color.h"
 #include "Camera.h"
+#include "Sample.h"
+#include "Sampler.h"
+#include "Point.h"
+#include "Shape.h"
+#include "Triangle.h"
+#include "Ray.h"
+#include "Intersect.h"
+#include "Direction.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-using namespace std;
-typedef glm::mat3 mat3 ;
-typedef glm::mat4 mat4 ; 
+
 typedef glm::vec3 vec3 ; 
 typedef glm::vec4 vec4 ;
 typedef glm::vec2 vec2 ;
 // To account for C++ namespace issues
 #define vector std::vector  
-//typedef vector<Point> Pvector;
+
 
 
 class Scene  
 {
  private:
-  vector<Surface> surfaces;
+  vector<Shape *> shapes;
   int width, height;
   float fovx, fovy;
   vec3 cameraPos, lookAt, upVector;
@@ -32,34 +39,33 @@ class Scene
   int maxDepth;
  public:
   Scene();
-  void init()
-  int width(){
+  void init();
+  int getWidth(){
     return width;
   }
-  int height(){
+  int getHeight(){
     return height;
   }
-  float fovx(){
+  float getFovx(){
     return fovx;
   }
-  float fovy(){
+  float getFovy(){
     return fovy;
   }
-  vec3 cameraPos(){
+  vec3 getCameraPos(){
     return cameraPos;
   }
-  vec3 lookat(){
+  vec3 getLookat(){
     return lookAt;
   }
-  vec3 upVector(){
+  vec3 getUpVector(){
     return upVector;
   }
-  int maxDepth(){
+  int getMaxDepth(){
     return maxDepth;
   }
+  void render();
   virtual ~Scene();
-  virtual void draw(int levelOfDetail);
 };
 
 #endif
-

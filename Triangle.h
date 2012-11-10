@@ -1,14 +1,11 @@
 #if !defined(TRIANGLE_H)
 #define TRIANGLE_H
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <math.h>
 #include "Shape.h"
 
-using namespace std;
-typedef glm::mat3 mat3 ;
-typedef glm::mat4 mat4 ; 
-typedef glm::vec3 vec3 ; 
-typedef glm::vec4 vec4 ;
-typedef glm::vec2 vec2 ;
 
 class Triangle : public Shape{
  protected:
@@ -39,7 +36,7 @@ class Triangle : public Shape{
     if ( (glm::dot(glm::cross(b - a, intersectPoint - a), normal) >= 0.0) &&
 	 (glm::dot(glm::cross(c - b, intersectPoint - b), normal) >= 0.0) &&
 	 (glm::dot(glm::cross(a - c, intersectPoint - c), normal) >= 0.0) ) {
-      return Intersect(intersectPoint, normal, this);
+      return Intersect(Point(intersectPoint), Direction(normal), (Shape *)this, t);
     } else {
       return Intersect();
     }

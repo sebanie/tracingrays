@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <math.h>
+#include "Direction.h"
 
 typedef glm::mat3 mat3 ;
 typedef glm::mat4 mat4 ; 
@@ -25,7 +26,7 @@ class Point
   float x(void);
   float y(void);
   float z(void);
-  Point* add(Direction* dir);
+  void add(Direction *dir, Point &result);
   float dist(Point* pt);
   //Direction* operator-(const Point* pt);
 };

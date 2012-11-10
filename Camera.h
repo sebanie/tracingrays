@@ -4,6 +4,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <math.h>
+#include "Sample.h"
+#include "Ray.h"
 
 typedef glm::mat3 mat3 ;
 typedef glm::mat4 mat4 ; 
