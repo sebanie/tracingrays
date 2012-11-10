@@ -5,12 +5,21 @@ Direction::Direction(void)
 
 }
 
+
+Direction::Direction(float x, float y, float z) {
+  mydir = vec3(x, y, z);
+}
+
 Direction::Direction(vec3 dir) {
   mydir = dir;
 }
 
-vec4 Direction::getDir(void) {
+vec3 Direction::getDir(void) {
   return mydir;
+}
+
+void Direction::setDir(vec3 dir) {
+  mydir = dir;
 }
 
 float Direction::x(void) {
@@ -25,8 +34,8 @@ float Direction::z(void) {
   return mydir.z;
 }
 
-Direction* Direction::mult(float t) {
-  return new Direction(t * mydir);
+void Direction::mult(float t, Direction &result) {
+  result.setDir(t * mydir);
 }
 
 Direction::~Direction(void) {
