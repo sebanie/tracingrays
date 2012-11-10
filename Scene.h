@@ -2,34 +2,63 @@
 #define SCENE_H
 
 #include <vector>
+#include "Film.h"
+#include "Camera.h"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
+using namespace std;
+typedef glm::mat3 mat3 ;
+typedef glm::mat4 mat4 ; 
+typedef glm::vec3 vec3 ; 
+typedef glm::vec4 vec4 ;
+typedef glm::vec2 vec2 ;
 // To account for C++ namespace issues
 #define vector std::vector  
 //typedef vector<Point> Pvector;
 
-// The basic curve class.  The basic element is a vector of Points, 
-// which is the Pvector.  
-// The class has methods for drawing adding, deleting, moving, updating, 
-// and so forth.  More details are in Curve.cpp 
-// The draw method is virtual since it is over-ridden by the specific 
-// curve (Bspline, Bezier, Bezier2 etc.).  
-
-// points is the actual vector of points used.  
-// The iterator into this (look up C++ iterators) is activePoint 
-// The bool isactive indicates if there is currently any active point 
-// (In previous versions, we did this by setting activePoint to null, but 
-// this is no longer allowed in modern C++)
-
 
 class Scene  
 {
-	private:
-		vector<Surface> surfaces;
-
-	public:
-		Scene();
-		virtual ~Scene();
-		virtual void draw(int levelOfDetail);
+ private:
+  vector<Surface> surfaces;
+  int width, height;
+  float fovx, fovy;
+  vec3 cameraPos, lookAt, upVector;
+  string outputFile;
+  Camera *camera;
+  Film *film;
+  int maxDepth;
+ public:
+  Scene();
+  void init()
+  int width(){
+    return width;
+  }
+  int height(){
+    return height;
+  }
+  float fovx(){
+    return fovx;
+  }
+  float fovy(){
+    return fovy;
+  }
+  vec3 cameraPos(){
+    return cameraPos;
+  }
+  vec3 lookat(){
+    return lookAt;
+  }
+  vec3 upVector(){
+    return upVector;
+  }
+  int maxDepth(){
+    return maxDepth;
+  }
+  virtual ~Scene();
+  virtual void draw(int levelOfDetail);
 };
 
 #endif
