@@ -31,6 +31,7 @@ class Shape{
     return emission;
   }
   float getShininess(){
+    return shininess;
   }
   virtual Intersect intersect(Ray r){
     return Intersect();
@@ -43,6 +44,7 @@ class Shape{
     //vec3 viewDirec = scene->cameraPos() - intersection.position().normalize();
     result = diffuse;
     return result;
+  }
 };
 
 #endif

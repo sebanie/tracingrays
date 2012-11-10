@@ -42,4 +42,5 @@ class Triangle : public Shape{
     }
   }
 };
+
 #endif

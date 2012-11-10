@@ -8,7 +8,7 @@ void Camera::generateRay(Sample &sample, Ray* ray)
   vec3 v = glm::cross(w, u);
 
   float j = (float) sample.x();
-  float i = (float) sample.y();
+  float i = ((float) _height) - ((float) sample.y());
 
   float halfwidth = ((float) _width) / 2.0;
   float halfheight = ((float) _height) / 2.0;

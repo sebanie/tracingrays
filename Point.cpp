@@ -17,6 +17,10 @@ vec3 Point::getPoint(void) {
   return mypoint;
 }
 
+void Point::setPoint(float x, float y, float z) {
+  mypoint = vec3(x, y, z);
+}
+
 float Point::x(void) {
   return mypoint.x;
 }

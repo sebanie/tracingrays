@@ -23,6 +23,7 @@ class Point
   Point(float x, float y, float z);
   virtual ~Point(void);
   vec3 getPoint(void);
+  void setPoint(float x, float y, float z);
   float x(void);
   float y(void);
   float z(void);

@@ -2,8 +2,8 @@
 #include "Color.h"
 #include "FreeImage.h"
 
-int sceneHeight = 100;
-int sceneWidth = 200;
+int sceneHeight = 480;
+int sceneWidth = 640;
 
 Film::Film(){
   pixelData = vector<vector<Color> >(sceneHeight,
@@ -13,7 +13,7 @@ Color Film::getPixel(int x, int y){
   return pixelData[y][x];
 }
 void Film::put(Sample pixel, Color pixelColor){
-  pixelData[pixel.y()][pixel.x()] = pixelColor;
+  pixelData[pixel.y()][pixel.x()] = pixelColor;//Color(0, 1, 0);
 }
 void Film::output(string path){
   int maxIntensity = 255;
@@ -27,9 +27,9 @@ void Film::output(string path){
     vector<Color> row = pixelData[h];
     for(int w = 0; w < sceneWidth; w++){
       Color pixelColor = row[w];
-      color.rgbRed = pixelColor.r() * maxIntensity;
-      color.rgbGreen = pixelColor.g() * maxIntensity;
-      color.rgbBlue = pixelColor.b() * maxIntensity;
+      color.rgbRed = pixelColor.getR() * maxIntensity;
+      color.rgbGreen = pixelColor.getG() * maxIntensity;
+      color.rgbBlue = pixelColor.getB() * maxIntensity;
       FreeImage_SetPixelColor(bitmap, w, h, &color);
     }
   }

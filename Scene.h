@@ -65,7 +65,7 @@ class Scene
     return maxDepth;
   }
   void render();
-  virtual ~Scene();
+  ~Scene();
 };
 
 #endif

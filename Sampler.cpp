@@ -11,7 +11,7 @@ Sampler::Sampler(int sizeX, int sizeY)
 
 bool Sampler::getSample(Sample *sample)
 {
-  if (!currPixel==numPixels) {
+  if (currPixel != numPixels) {
     sample->setX(((float) (currPixel % _sizeX)));
     sample->setY(((float) (currPixel / _sizeX)));
     currPixel++;

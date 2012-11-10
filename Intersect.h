@@ -33,6 +33,7 @@ class Intersect{
     normal = Direction(0.0, 0.0, 0.0);
     shape = NULL;
     hit = false;
+    t = 99999.9;
   }
   Intersect(Point pos, Direction norm, Shape *s, float tVal){
     position = pos;

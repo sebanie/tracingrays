@@ -19,7 +19,9 @@ raytrace: test.o Film.o Camera.o Direction.o Point.o Ray.o Sample.o Sampler.o Sc
 	$(CC) $(CFLAGS) -o raytrace test.o Film.o Camera.o Direction.o Point.o Ray.o Sample.o Sampler.o Scene.o $(INCFLAGS) $(LDFLAGS) 
 test.o: test.cpp Color.h Film.h
 	$(CC) $(CFLAGS) $(INCFLAGS) -c test.cpp
-Scene.o: Scene.cpp Film.h Camera.h Sample.h Sampler.h Point.h Direction.h Color.h Shaple.h Triangle.h Ray.h Intersect.h
+Intersect.h: Scene.h
+Triangle.h: Shape.h
+Scene.o: Scene.cpp Ray.h Sample.h Sampler.h Point.h Direction.h Color.h Film.h Camera.h Intersect.h Shape.h Triangle.h
 	$(CC) $(CFLAGS) $(INCFLAGS) -c Scene.cpp 
 Film.o: Film.cpp Film.h Color.h
 	$(CC) $(CFLAGS) $(INCFLAGS) -c Film.cpp
@@ -31,7 +33,6 @@ Point.o: Point.cpp
 	$(CC) $(CFLAGS) $(INCFLAGS) -c Point.cpp
 Ray.o: Ray.cpp Point.h Direction.h
 	$(CC) $(CFLAGS) $(INCFLAGS) -c Ray.cpp
-Intersect.h: Scene.h
 Sample.o: Sample.cpp
 	$(CC) $(CFLAGS) $(INCFLAGS) -c Sample.cpp
 Sampler.o: Sampler.cpp Sample.h
