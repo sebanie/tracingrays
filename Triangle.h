@@ -5,7 +5,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <math.h>
 #include "Shape.h"
-
+#include <stdio.h>
 
 class Triangle : public Shape{
  protected:
@@ -24,7 +24,6 @@ class Triangle : public Shape{
     vec3 c = v3.getPoint();
 
     vec3 normal = glm::cross((b - a), (c - a));
-    
     float t = glm::dot((a - r.getPos()), normal) / glm::dot(r.getDir(), normal);
     if(t < 0.0){
       return Intersect();

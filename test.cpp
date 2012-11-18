@@ -1,8 +1,10 @@
 #include "Film.h"
 #include "Scene.h"
 
+Scene scene;
+
 int main(int argc, char* argv[]){
-  Scene newScene = Scene();
-  newScene.render();
+  Scene scene = Scene();
+  scene.render();
   return 0;
 }

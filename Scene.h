@@ -1,6 +1,7 @@
 #if !defined(SCENE_H)
 #define SCENE_H
 
+class RayTracer;
 #include <vector>
 #include "Film.h"
 #include "Color.h"
@@ -10,7 +11,9 @@
 #include "Point.h"
 #include "Shape.h"
 #include "Triangle.h"
+#include "Sphere.h"
 #include "Ray.h"
+#include "RayTracer.h"
 #include "Intersect.h"
 #include "Direction.h"
 #include <glm/glm.hpp>
@@ -25,11 +28,11 @@ typedef glm::vec2 vec2 ;
 #define vector std::vector  
 
 
-
 class Scene  
 {
  private:
-  vector<Shape *> shapes;
+  vector<Shape *>* shapes;
+  //vector<Light *> lights;
   int width, height;
   float fovx, fovy;
   vec3 cameraPos, lookAt, upVector;
@@ -37,6 +40,7 @@ class Scene
   Camera *camera;
   Film *film;
   int maxDepth;
+	RayTracer *rt;
  public:
   Scene();
   void init();
@@ -64,8 +68,12 @@ class Scene
   int getMaxDepth(){
     return maxDepth;
   }
+  vector<Shape *>* getShapes(){
+    return shapes;
+  }
   void render();
   ~Scene();
 };
+extern Scene scene;
 
 #endif

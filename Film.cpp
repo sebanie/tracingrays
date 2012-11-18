@@ -1,10 +1,10 @@
 #include "Film.h"
 #include "Color.h"
 #include "FreeImage.h"
+#include "Scene.h"
 
-int sceneHeight = 480;
-int sceneWidth = 640;
-
+int sceneHeight = scene.getHeight();
+int sceneWidth = scene.getWidth();
 Film::Film(){
   pixelData = vector<vector<Color> >(sceneHeight,
 				    vector<Color>(sceneWidth, Color(1,0,1)));
@@ -35,6 +35,7 @@ void Film::output(string path){
   }
   if (FreeImage_Save(FIF_PNG, bitmap, path.c_str(), 0)) {
     cout << "Image saved to " << path << endl;
+    cout << scene.getWidth() << endl;
   }
   else {
     cerr << "Couldn't save image to " << path << endl;

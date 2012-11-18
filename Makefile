@@ -15,13 +15,15 @@ endif
 
 RM = /bin/rm -f 
 all: raytrace
-raytrace: test.o Film.o Camera.o Direction.o Point.o Ray.o Sample.o Sampler.o Scene.o
-	$(CC) $(CFLAGS) -o raytrace test.o Film.o Camera.o Direction.o Point.o Ray.o Sample.o Sampler.o Scene.o $(INCFLAGS) $(LDFLAGS) 
+raytrace: test.o Film.o Camera.o Direction.o Point.o Ray.o RayTracer.o Sample.o Sampler.o Scene.o
+	$(CC) $(CFLAGS) -o raytrace test.o Film.o Camera.o Direction.o Point.o Ray.o RayTracer.o Sample.o Sampler.o Scene.o $(INCFLAGS) $(LDFLAGS) 
 test.o: test.cpp Color.h Film.h
 	$(CC) $(CFLAGS) $(INCFLAGS) -c test.cpp
+RayTracer.h: Scene.h
 Intersect.h: Scene.h
 Triangle.h: Shape.h
-Scene.o: Scene.cpp Ray.h Sample.h Sampler.h Point.h Direction.h Color.h Film.h Camera.h Intersect.h Shape.h Triangle.h
+Sphere.h: Shape.h
+Scene.o: Scene.cpp Ray.h RayTracer.h Sample.h Sampler.h Point.h Direction.h Color.h Film.h Camera.h Intersect.h Shape.h Triangle.h Sphere.h
 	$(CC) $(CFLAGS) $(INCFLAGS) -c Scene.cpp 
 Film.o: Film.cpp Film.h Color.h
 	$(CC) $(CFLAGS) $(INCFLAGS) -c Film.cpp
@@ -33,6 +35,8 @@ Point.o: Point.cpp
 	$(CC) $(CFLAGS) $(INCFLAGS) -c Point.cpp
 Ray.o: Ray.cpp Point.h Direction.h
 	$(CC) $(CFLAGS) $(INCFLAGS) -c Ray.cpp
+RayTracer.o: RayTracer.cpp Scene.h Color.h Intersect.h
+	$(CC) $(CFLAGS) $(INCFLAGS) -c RayTracer.cpp
 Sample.o: Sample.cpp
 	$(CC) $(CFLAGS) $(INCFLAGS) -c Sample.cpp
 Sampler.o: Sampler.cpp Sample.h
