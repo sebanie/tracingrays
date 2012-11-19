@@ -1,9 +1,12 @@
 #if !defined(SHAPE_H)
 #define SHAPE_H
 
+class Intersect;
 #include <vector>
+#include <stdio.h>
 #include "Intersect.h"
 #include "Color.h"
+#include "Ray.h"
 
 using namespace std;
 
@@ -33,18 +36,8 @@ class Shape{
   float getShininess(){
     return shininess;
   }
-  virtual Intersect intersect(Ray r){
-    return Intersect();
-  }
-  Color intersectColor(Intersect intersection){
-    Color result;
-    if(!intersection.isHit()){
-      return bgColor;
-    }
-    //vec3 viewDirec = scene->cameraPos() - intersection.position().normalize();
-    result = diffuse;
-    return result;
-  }
+  virtual Intersect intersect(Ray r);
+  Color intersectColor(Intersect intersection);
 };
 
 #endif

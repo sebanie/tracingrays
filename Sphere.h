@@ -51,6 +51,7 @@ class Sphere : public Shape{
       return Intersect();
     }
     vec3 intersectPoint = r.getPos() + t*r.getDir();
+    normal = glm::normalize(intersectPoint - centerPoint);
    
     // if INTERSECTPOINT is within triangle, then these cross products should
     // return vectors that face the same direction as NORMAL

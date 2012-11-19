@@ -9,6 +9,9 @@ class RayTracer;
 #include "Sample.h"
 #include "Sampler.h"
 #include "Point.h"
+#include "Light.h"
+#include "PointLight.h"
+#include "DirLight.h"
 #include "Shape.h"
 #include "Triangle.h"
 #include "Sphere.h"
@@ -32,7 +35,7 @@ class Scene
 {
  private:
   vector<Shape *>* shapes;
-  //vector<Light *> lights;
+  vector<Light *>* lights;
   int width, height;
   float fovx, fovy;
   vec3 cameraPos, lookAt, upVector;
@@ -70,6 +73,9 @@ class Scene
   }
   vector<Shape *>* getShapes(){
     return shapes;
+  }
+  vector<Light *>* getLights(){
+    return lights;
   }
   void render();
   ~Scene();

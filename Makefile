@@ -15,8 +15,8 @@ endif
 
 RM = /bin/rm -f 
 all: raytrace
-raytrace: test.o Film.o Camera.o Direction.o Point.o Ray.o RayTracer.o Sample.o Sampler.o Scene.o
-	$(CC) $(CFLAGS) -o raytrace test.o Film.o Camera.o Direction.o Point.o Ray.o RayTracer.o Sample.o Sampler.o Scene.o $(INCFLAGS) $(LDFLAGS) 
+raytrace: test.o Film.o Camera.o Direction.o Point.o Ray.o RayTracer.o Sample.o Sampler.o Scene.o Shape.o PointLight.o DirLight.o
+	$(CC) $(CFLAGS) -o raytrace test.o Film.o Camera.o Direction.o Point.o Ray.o RayTracer.o Sample.o Sampler.o Scene.o Shape.o PointLight.o DirLight.o $(INCFLAGS) $(LDFLAGS) 
 test.o: test.cpp Color.h Film.h
 	$(CC) $(CFLAGS) $(INCFLAGS) -c test.cpp
 RayTracer.h: Scene.h
@@ -41,6 +41,12 @@ Sample.o: Sample.cpp
 	$(CC) $(CFLAGS) $(INCFLAGS) -c Sample.cpp
 Sampler.o: Sampler.cpp Sample.h
 	$(CC) $(CFLAGS) $(INCFLAGS) -c Sampler.cpp
+PointLight.o: PointLight.cpp Light.h
+	$(CC) $(CFLAGS) $(INCFLAGS) -c PointLight.cpp
+DirLight.o: DirLight.cpp Light.h
+	$(CC) $(CFLAGS) $(INCFLAGS) -c DirLight.cpp
+Shape.o: Shape.cpp
+	$(CC) $(CFLAGS) $(INCFLAGS) -c Shape.cpp
 clean: 
 	$(RM) *.o raytrace *.png
 

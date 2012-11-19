@@ -18,7 +18,8 @@ Color RayTracer::trace(Ray r, int lvl){
     vec3 norm = intersect.getNormal().getDir();
     vec3 vpar = 2*glm::dot(norm, glm::normalize(r.getDir())) * norm;
     vec3 reflectedRay = glm::normalize(r.getDir() - vpar);
-    return intersect.getShape()->intersectColor(intersect)+intersect.getShape()->getSpecular();
+	//cout << "magic" << endl;
+    return intersect.getShape()->intersectColor(intersect);//+intersect.getShape()->getSpecular();
   }
   return black;
 }
