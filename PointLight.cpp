@@ -9,7 +9,7 @@ vec3 PointLight::getPosition()
 
 vec3 PointLight::getDirection(Point pt)
 {
-	return _position.getPoint() - pt.getPoint();
+	return glm::normalize(_position.getPoint() - pt.getPoint());
 }
 
 void PointLight::generateLightRay(Intersect &inters, Ray *ray)

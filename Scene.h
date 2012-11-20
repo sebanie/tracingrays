@@ -27,6 +27,7 @@ class RayTracer;
 typedef glm::vec3 vec3 ; 
 typedef glm::vec4 vec4 ;
 typedef glm::vec2 vec2 ;
+typedef glm::mat4 mat4 ;
 // To account for C++ namespace issues
 #define vector std::vector  
 

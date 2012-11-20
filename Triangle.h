@@ -23,11 +23,13 @@ class Triangle : public Shape{
     vec3 b = v2.getPoint();
     vec3 c = v3.getPoint();
 
-    vec3 normal = glm::cross((b - a), (c - a));
+    vec3 normal = glm::normalize(glm::cross((b - a), (c - a)));
     float t = glm::dot((a - r.getPos()), normal) / glm::dot(r.getDir(), normal);
     if(t < 0.0){
+      //std::cout << "hey booiiiii" << std::endl;
       return Intersect();
     }
+
     vec3 intersectPoint = r.getPos() + t*r.getDir();
    
     // if INTERSECTPOINT is within triangle, then these cross products should
@@ -37,6 +39,7 @@ class Triangle : public Shape{
 	 (glm::dot(glm::cross(a - c, intersectPoint - c), normal) >= 0.0) ) {
       return Intersect(Point(intersectPoint), Direction(normal), (Shape *)this, t);
     } else {
+      //std::cout << "bam" << std::endl;
       return Intersect();
     }
   }

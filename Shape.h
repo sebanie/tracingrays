@@ -12,6 +12,7 @@ using namespace std;
 
 class Shape{
   Color bgColor;
+  bool blockedByObject(Ray *r);
  protected:
   Color diffuse, specular, emission;
   float shininess;
@@ -36,7 +37,7 @@ class Shape{
   float getShininess(){
     return shininess;
   }
-  virtual Intersect intersect(Ray r);
+  virtual Intersect intersect(Ray r) = 0;
   Color intersectColor(Intersect intersection);
 };
 

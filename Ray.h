@@ -29,6 +29,7 @@ class Ray
   vec3 getDir(void);
   float getTMIN(void);
   float getTMAX(void);
+  Ray transform(mat4 matrix);
   virtual ~Ray(void);
 };
 

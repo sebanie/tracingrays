@@ -26,6 +26,7 @@ class Direction
   float y(void);
   float z(void);
   void mult(float t, Direction &result);
+  void normalize(void);
 };
 
 

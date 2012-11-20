@@ -5,6 +5,10 @@
 #include "Intersect.h"
 #include "Ray.h"
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 class Light{
 	protected:
 		Color lightColor;
@@ -14,7 +18,7 @@ class Light{
 			return lightColor;
 		}
 		virtual vec3 getDirection(Point) = 0;// { return vec3(0, 0, 0); }
-		void generateLightRay(Intersect &inters, Ray *ray) {}
+		virtual void generateLightRay(Intersect &inters, Ray *ray) = 0;
 };
 
 #endif

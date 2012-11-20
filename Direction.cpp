@@ -38,6 +38,10 @@ void Direction::mult(float t, Direction &result) {
   result.setDir(t * mydir);
 }
 
+void Direction::normalize(void) {
+  mydir = glm::normalize(mydir);
+}
+
 Direction::~Direction(void) {
 
 }
