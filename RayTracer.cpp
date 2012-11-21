@@ -80,9 +80,9 @@ cout << "sadness" << endl;
    
 //cout << "did i get here?" << endl;
     result += currShape->getEmission().getColors() + currShape->getAmbient().getColors();
-    if (result[0] > 1.0) result[0] = 1.0;
-    if (result[1] > 1.0) result[1] = 1.0;
-    if (result[2] > 1.0) result[2] = 1.0;
+    //if (result[0] > 1.0) result[0] = 1.0;
+    //if (result[1] > 1.0) result[1] = 1.0;
+    //if (result[2] > 1.0) result[2] = 1.0;
     Color finalColor = Color(result.x, result.y, result.z);
 cout << "finishes color computation" << endl;
     outputColor.setColors(finalColor);
@@ -110,7 +110,7 @@ Intersect RayTracer::closestShape(Ray r){
 //cout << "magic9" << endl;
 	//vector<Shape *> sceneShapes = scene.getShapes();
 	//cout << "Scene Shine: " << sceneShapes[0]->getShininess() << endl;
-	Intersect closest = Intersect();
+	Intersect closest = Intersect(Intersect());
 	for(;itStart != itEnd; itStart++){
 //cout << "magic10" << endl;
 		Intersect currentIntersect = (*itStart)->intersect(r);
@@ -122,7 +122,9 @@ Intersect RayTracer::closestShape(Ray r){
 			if(currentIntersect.getT() < closest.getT()){
 //cout << "magic13" << endl;
 				closest = currentIntersect;
-			}
+			} else {
+//cout << "ajfkjsklllll" << endl;
+                        }
 		}
 	}
 //cout << "magic14" << endl;

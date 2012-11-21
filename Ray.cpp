@@ -62,5 +62,5 @@ Ray Ray::transform(mat4 matrix)
 {
   vec4 transfPos = matrix * vec4(getPos(), 1.0);
   vec4 transfDir = matrix * vec4(getDir(), 0.0);
-  return Ray(Point(vec3(transfPos)), Direction(vec3(transfDir)), _tMin, _tMax);
+  return Ray(Point(vec3(transfPos)), Direction(glm::normalize(vec3(transfDir))), _tMin, _tMax);
 }

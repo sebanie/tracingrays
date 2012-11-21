@@ -2,7 +2,7 @@
 
 Direction::Direction(void)
 {
-
+  mydir = vec3(0.0);
 }
 
 
@@ -11,7 +11,7 @@ Direction::Direction(float x, float y, float z) {
 }
 
 Direction::Direction(vec3 dir) {
-  mydir = dir;
+  mydir = vec3(dir.x, dir.y, dir.z);
 }
 
 vec3 Direction::getDir(void) {
@@ -19,7 +19,9 @@ vec3 Direction::getDir(void) {
 }
 
 void Direction::setDir(vec3 dir) {
-  mydir = dir;
+  mydir.x = dir.x;
+  mydir.y = dir.y;
+  mydir.z = dir.z;
 }
 
 float Direction::x(void) {

@@ -84,11 +84,13 @@ class Sphere : public Shape{
 
 
     intersectPoint = vec3(matrix * vec4(intersectPoint, 1.0));
+
+    float worldt = (intersectPoint - r.getPos()).x / r.getDir().x;
     
    
     // if INTERSECTPOINT is within triangle, then these cross products should
     // return vectors that face the same direction as NORMAL
-    return Intersect(Point(intersectPoint), Direction(normal), (Shape *)this, t);
+    return Intersect(Point(intersectPoint), Direction(normal), (Shape *)this, worldt);
   }
 
   vec3 calculateNormal(vec3 pt) {
