@@ -3,17 +3,21 @@
 #include "FreeImage.h"
 #include "Scene.h"
 
-int sceneHeight = scene.getHeight();
-int sceneWidth = scene.getWidth();
-Film::Film(){
+
+Film::Film(int height, int width){
+  sceneHeight = height;
+  sceneWidth = width;
   pixelData = vector<vector<Color> >(sceneHeight,
 				    vector<Color>(sceneWidth, Color(1,0,1)));
+  cout << "This is scene height: " << sceneHeight << endl;
 }
 Color Film::getPixel(int x, int y){
   return pixelData[y][x];
 }
 void Film::put(Sample pixel, Color pixelColor){
+  cout << "yoyo ma man" << endl;
   pixelData[pixel.y()][pixel.x()] = pixelColor;//Color(0, 1, 0);
+  cout << "out of your mind" << endl;
 }
 void Film::output(string path){
   int maxIntensity = 255;
@@ -35,7 +39,7 @@ void Film::output(string path){
   }
   if (FreeImage_Save(FIF_PNG, bitmap, path.c_str(), 0)) {
     cout << "Image saved to " << path << endl;
-    cout << scene.getWidth() << endl;
+    cout << sceneWidth << endl;
   }
   else {
     cerr << "Couldn't save image to " << path << endl;

@@ -18,16 +18,19 @@ class Sphere : public Shape{
   float radius;
   mat4 matrix, inverse;
  public:
-  Sphere(Point c, float r, Color d, Color s, Color e, float shine, mat4 transf){
+  Sphere(Point c, float r, Color a, Color d, Color s, Color e, float shine, mat4 transf){
     center = c;
     radius = r;
-    setMaterialProperties(d, s, e, shine);
+    setMaterialProperties(a, d, s, e, shine);
     matrix = transf;
     inverse = glm::inverse(transf);
     //std::cout << inverse[2][2] << std::endl;
   }
+
   Sphere(){}
+
   Intersect intersect(Ray r){
+//cout << "no, it was a sphere!" << endl;
 
     Ray transfRay = r.transform(inverse);
 

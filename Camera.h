@@ -28,6 +28,7 @@ class Camera
   Camera(vec3 lookfrom, vec3 lookat, vec3 up, float fovy, int height, int width);
   ~Camera(void);
   void generateRay(Sample &sample, Ray* ray);
+  vec3 getCameraPos(void);
   
 };
 

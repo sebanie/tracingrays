@@ -44,9 +44,18 @@ class Scene
   Camera *camera;
   Film *film;
   int maxDepth;
-	RayTracer *rt;
+  RayTracer *rt;
+
+  vec3 ambient,
+       emission,
+       diffuse,
+       specular,
+       attenuation;
+  float shine;
+
  public:
   Scene();
+  void parse(const char * filename);
   void init();
   int getWidth(){
     return width;

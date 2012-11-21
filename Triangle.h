@@ -11,14 +11,18 @@ class Triangle : public Shape{
  protected:
   Point v1, v2, v3;
  public:
-  Triangle(Point vert1, Point vert2, Point vert3, Color d, Color s, Color e, float shine){
+  Triangle(Point vert1, Point vert2, Point vert3, Color a, Color d, Color s, Color e, float shine){
     v1 = vert1;
     v2 = vert2;
     v3 = vert3;
-    setMaterialProperties(d, s, e, shine);
+    setMaterialProperties(a, d, s, e, shine);
   }
-  Triangle(){}
+
+  Triangle() {}
+
   Intersect intersect(Ray r){
+  //cout << "meme, it was a triangle!" << endl;
+
     vec3 a = v1.getPoint();
     vec3 b = v2.getPoint();
     vec3 c = v3.getPoint();
@@ -37,6 +41,7 @@ class Triangle : public Shape{
     if ( (glm::dot(glm::cross(b - a, intersectPoint - a), normal) >= 0.0) &&
 	 (glm::dot(glm::cross(c - b, intersectPoint - b), normal) >= 0.0) &&
 	 (glm::dot(glm::cross(a - c, intersectPoint - c), normal) >= 0.0) ) {
+//cout << "allo" << endl;
       return Intersect(Point(intersectPoint), Direction(normal), (Shape *)this, t);
     } else {
       //std::cout << "bam" << std::endl;

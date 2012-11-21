@@ -20,8 +20,10 @@ typedef glm::vec2 vec2 ;
 class Film{
  private:
   vector<vector<Color> > pixelData;
+  int sceneHeight;
+  int sceneWidth;
  public:
-  Film();
+  Film(int height, int width);
   void put(Sample pixel, Color c);
   Color getPixel(int x, int y);
   void output(string path);

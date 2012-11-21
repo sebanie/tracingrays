@@ -1,5 +1,8 @@
 #include "Camera.h"
 #include "Point.h"
+#include <iostream>
+
+using namespace std;
 
 void Camera::generateRay(Sample &sample, Ray* ray)
 {
@@ -12,7 +15,7 @@ void Camera::generateRay(Sample &sample, Ray* ray)
 
   float halfwidth = ((float) _width) / 2.0;
   float halfheight = ((float) _height) / 2.0;
-  
+
   float alpha = (tan(_fovx / 2)) * ((j - halfwidth) / halfwidth);
   float beta = (tan(_fovy / 2)) * ((halfheight - i) / halfheight);
 
@@ -25,6 +28,7 @@ void Camera::generateRay(Sample &sample, Ray* ray)
   ray->setDir(dir);
   ray->setTMIN(0.0001);
   ray->setTMAX(10000);
+
   
 }
 
@@ -42,6 +46,11 @@ Camera::Camera(vec3 lookfrom, vec3 lookat, vec3 up, float fovy, int height, int 
   float z = (1 / tan(_fovy / 2.0)) * ((float) height / 2.0);
   //check for z==0
   _fovx = 2 * atan(((float) width / 2.0) / z);
+}
+
+vec3 Camera::getCameraPos(void)
+{
+  return _lookfrom;
 }
 
 Camera::Camera(void)

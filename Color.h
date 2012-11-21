@@ -21,6 +21,9 @@ class Color{
   Color(float r, float g, float b){
     rgbValues = vec3(r,g,b);
   }
+  Color(vec3 input){
+    rgbValues = input;
+  }
   vec3 getColors(){
     return rgbValues;
   }
@@ -32,6 +35,26 @@ class Color{
   }
   float getB(){
     return rgbValues[2];
+  }
+  void setR(float r){
+    rgbValues[0] = r;
+  }
+  void setG(float g){
+    rgbValues[1] = g;
+  }
+  void setB(float b){
+    rgbValues[2] = b;
+  }
+  void setColors(float r, float g, float b){
+    rgbValues[0] = r;
+    rgbValues[1] = g;
+    rgbValues[2] = b;
+  }
+  void setColors(Color color){
+    vec3 col = color.getColors();
+    rgbValues[0] = col.x;
+    rgbValues[1] = col.y;
+    rgbValues[2] = col.z;
   }
   Color operator=(const Color &param){
     if(this != &param){
@@ -48,10 +71,16 @@ class Color{
   }
   Color operator*=(float scalar){
     rgbValues *= scalar;
+    if (rgbValues[0] > 1.0) rgbValues[0] = 1.0;
+    if (rgbValues[1] > 1.0) rgbValues[1] = 1.0;
+    if (rgbValues[2] > 1.0) rgbValues[2] = 1.0;
     return *this;
   }
   Color operator*=(const Color &param){
     rgbValues *= param.rgbValues;
+    if (rgbValues[0] > 1.0) rgbValues[0] = 1.0;
+    if (rgbValues[1] > 1.0) rgbValues[1] = 1.0;
+    if (rgbValues[2] > 1.0) rgbValues[2] = 1.0;
     return *this;
   }
   Color operator+(const Color &operand) const{

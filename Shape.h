@@ -2,6 +2,7 @@
 #define SHAPE_H
 
 class Intersect;
+class Light;
 #include <vector>
 #include <stdio.h>
 #include "Intersect.h"
@@ -11,20 +12,23 @@ class Intersect;
 using namespace std;
 
 class Shape{
-  Color bgColor;
-  bool blockedByObject(Ray *r);
+  //bool blockedByObject(Ray *r);
  protected:
-  Color diffuse, specular, emission;
+  Color diffuse, specular, emission, ambient;
   float shininess;
   
-  void setMaterialProperties(Color d, Color s, Color e, float shine){
+  void setMaterialProperties(Color a, Color d, Color s, Color e, float shine){
+    ambient = a;
     diffuse = d;
     specular = s;
     emission = e;
     shininess = shine;
   }
  public:
-  Shape(){bgColor = Color(0.0, 1.0, 0.0);}
+  Shape() {}
+  Color getAmbient(){
+    return ambient;
+  }
   Color getDiffuse(){
     return diffuse;
   }
@@ -38,7 +42,7 @@ class Shape{
     return shininess;
   }
   virtual Intersect intersect(Ray r) = 0;
-  Color intersectColor(Intersect intersection);
+  void intersectColor(Intersect intersection, Light* currLight, vec3 camPosn, vec3 &result);
 };
 
 #endif
