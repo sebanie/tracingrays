@@ -9,9 +9,10 @@ class PointLight : public Light {
 	protected:
 		Point _position;
 	public:
-		PointLight(Color color, Point position) {
+		PointLight(Color color, Point position, vec3 atten) {
 			_position = position;
 			lightColor = color;
+			setAttenuation(atten);
 		}
 		vec3 getPosition();
 		virtual vec3 getDirection(Point pt);

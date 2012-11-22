@@ -1,5 +1,6 @@
 #include "Scene.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -85,6 +86,9 @@ void Scene::render(){
   Ray r;
   int i = 0;
   while(sampler.getSample(&curSample)) {
+		if((i % (sampler.numPixels/20)) == 0){
+			cout << 5*(i/(sampler.numPixels/20)) << "\%" << endl;
+		}
 		//cout << i << endl;
     camera->generateRay(curSample, &r);
 		//cout << "shine: " << (*shapes)[0]->getShininess() << endl;
@@ -223,7 +227,7 @@ void Scene::parse(const char * filename)
             vec3 pt = vec3(values[0], values[1], values[2]);
             pt = vec3(transfstack.top() * vec4(pt, 1.0));
             Color color = Color(values[3], values[4], values[5]);
-            lights->push_back(new PointLight(color, Point(pt)));
+            lights->push_back(new PointLight(color, Point(pt), attenuation));
           }
         }
 
@@ -316,9 +320,9 @@ void Scene::parse(const char * filename)
             Point v2 = Point(vec3(transfstack.top() * temp2));
             Point v3 = Point(vec3(transfstack.top() * temp3));
 
-            cout << "v1: " << v1.getPoint().x << v1.getPoint().y << v1.getPoint().z << endl;
-            cout << "v2: " << v2.getPoint().x << v2.getPoint().y << v2.getPoint().z << endl;
-            cout << "v3: " << v3.getPoint().x << v3.getPoint().y << v3.getPoint().z << endl << endl;
+//            cout << "v1: " << v1.getPoint().x << v1.getPoint().y << v1.getPoint().z << endl;
+//            cout << "v2: " << v2.getPoint().x << v2.getPoint().y << v2.getPoint().z << endl;
+//            cout << "v3: " << v3.getPoint().x << v3.getPoint().y << v3.getPoint().z << endl << endl;
 
             shapes->push_back(new Triangle(v1, v2, v3, Color(ambient), Color(diffuse), Color(specular), Color(emission), shine));
           }
@@ -358,7 +362,7 @@ void Scene::parse(const char * filename)
 	    float sz = values[2];
 	    mat4 scale = Transform::scale(sx, sy, sz);
 	    rightmultiply(scale, transfstack);
-cout << scale[0][0] << " " << scale[1][1] << " " << scale[2][2] << endl;
+//cout << scale[0][0] << " " << scale[1][1] << " " << scale[2][2] << endl;
           }
         }
         else if (cmd == "rotate") {

@@ -4,6 +4,7 @@ DirLight::DirLight(Color color, Direction dir) {
         dir.normalize();
 	_dir = dir;
 	lightColor = color;
+	setAttenuation(vec3(1.0, 0, 0));
 }
 
 vec3 DirLight::getDirection(Point ignored) {
