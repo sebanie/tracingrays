@@ -18,13 +18,13 @@ bool RayTracer::blockedByObject(Ray *r, Shape* shape){
 	vector<Shape *>::iterator itStart = _shapes->begin();
 	vector<Shape *>::iterator itEnd = _shapes->end();
 	//vector<Shape *> sceneShapes = scene.getShapes();
-	cout << "checking for blocked" << endl;
+	//cout << "checking for blocked" << endl;
 	for(;itStart != itEnd; itStart++){
 		Shape *current = *itStart;
-		std::cout << "i am a " << this << " compared to " << current << std::endl;
+		//std::cout << "i am a " << this << " compared to " << current << std::endl;
 		if ( (current != shape) &&
 		     (*itStart)->intersect(*r).isHit() ) {
-			std::cout << "i am blocked" << std::endl;
+			//std::cout << "i am blocked" << std::endl;
 			return true;
 		}
 	}
@@ -63,14 +63,14 @@ void RayTracer::trace(Ray r, int lvl, Color& outputColor){
 
     for (vector<Light *>::iterator lightIter = _lights->begin();
          lightIter != _lights->end(); lightIter++) {
-cout << "yo what's up" << endl;
+//cout << "yo what's up" << endl;
       Light *currLight = *lightIter;
-cout << "i hate my life" << endl;
-      Ray *lightray;
+//cout << "i hate my life" << endl;
+      Ray *lightray = new Ray();
       currLight->generateLightRay(intersect, lightray);
-cout << "so sad" << endl;
+//cout << "so sad" << endl;
       if (!blockedByObject(lightray, currShape)) {
-cout << "sadness" << endl;
+//cout << "sadness" << endl;
         currShape->intersectColor(intersect, currLight, cam, contribution);
         result += contribution;
       }
@@ -80,11 +80,11 @@ cout << "sadness" << endl;
    
 //cout << "did i get here?" << endl;
     result += currShape->getEmission().getColors() + currShape->getAmbient().getColors();
-    //if (result[0] > 1.0) result[0] = 1.0;
-    //if (result[1] > 1.0) result[1] = 1.0;
-    //if (result[2] > 1.0) result[2] = 1.0;
+    if (result[0] > 1.0) result[0] = 1.0;
+    if (result[1] > 1.0) result[1] = 1.0;
+    if (result[2] > 1.0) result[2] = 1.0;
     Color finalColor = Color(result.x, result.y, result.z);
-cout << "finishes color computation" << endl;
+//cout << "finishes color computation" << endl;
     outputColor.setColors(finalColor);
     return;
 

@@ -2,13 +2,14 @@
 
 Ray::Ray(void)
 {
-
+  _pt = Point(0, 0, 0);
+  _dir = Direction(0, 0, 0);
+  _tMin = 0;
+  _tMax = 9999;
 }
 
 Ray::Ray(Point pt, Direction dir, float tMin, float tMax)
-{
-
-  
+{ 
   _pt = pt;
   _dir = dir;
   _tMin = tMin;
@@ -27,9 +28,7 @@ void Ray::setPoint(Point pt)
 
 void Ray::setDir(Direction dir)
 {
-  _dir.x = dir.x;
-  _dir.y = dir.y;
-  _dir.z = dir.z;
+  _dir = dir;
 }
 
 void Ray::setTMIN(float tmin)
