@@ -15,6 +15,7 @@ class RayTracer;
 #include "Shape.h"
 #include "Triangle.h"
 #include "Sphere.h"
+#include "TriNormal.h"
 #include "Ray.h"
 #include "RayTracer.h"
 #include "Intersect.h"
