@@ -7,6 +7,8 @@ Ray::Ray(void)
 
 Ray::Ray(Point pt, Direction dir, float tMin, float tMax)
 {
+
+  
   _pt = pt;
   _dir = dir;
   _tMin = tMin;
@@ -25,7 +27,9 @@ void Ray::setPoint(Point pt)
 
 void Ray::setDir(Direction dir)
 {
-  _dir = dir;
+  _dir.x = dir.x;
+  _dir.y = dir.y;
+  _dir.z = dir.z;
 }
 
 void Ray::setTMIN(float tmin)

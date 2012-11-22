@@ -17,7 +17,7 @@ camera -4 -4 4 1 0 0 0 1 0 30
 
 ambient .1 .1 .1
 #directional -.5 3 1 0 .5 1 
-#directional -1 0 1 1 0 0 
+directional -1 0 1 1 0 0 
 #point 0 -2 1 0 .5 0
 diffuse 1 0 0 
 specular 0 0 0
