@@ -325,11 +325,14 @@ void Scene::parse(const char * filename)
         }
         else if (cmd == "trinormal") {
           validinput = readvals(s, 3, values) ; 
-          if (validinput) { /*
-            Point v1 = Point(verts[values[0]]);
-            Point v2 = Point(verts[values[1]]);
-            Point v3 = Point(verts[values[2]]);
-            shapes->push_back(new Triangle(v1, v2, v3, ambient, diffuse, specular, emission, shine)); */
+          if (validinput) {
+            Point v1 = Point(vnverts[values[0]]);
+            Point v2 = Point(vnverts[values[1]]);
+            Point v3 = Point(vnverts[values[2]]);
+						Direction vn1 = Direction(vnnorms[values[0]]);
+						Direction vn2 = Direction(vnnorms[values[1]]);
+						Direction vn3 = Direction(vnnorms[values[2]]);
+            shapes->push_back(new TriNormal(v1, v2, v3, vn1, vn2, vn3, ambient, diffuse, specular, emission, shine));
           }
         }
 

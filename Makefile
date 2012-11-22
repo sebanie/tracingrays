@@ -23,7 +23,8 @@ RayTracer.h: Scene.h
 Intersect.h: Scene.h
 Triangle.h: Shape.h
 Sphere.h: Shape.h
-Scene.o: Scene.cpp Ray.h RayTracer.h Sample.h Sampler.h Point.h Direction.h Color.h Film.h Camera.h Intersect.h Shape.h Triangle.h Sphere.h
+TriNormal.h: Shape.h
+Scene.o: Scene.cpp Ray.h RayTracer.h Sample.h Sampler.h Point.h Direction.h Color.h Film.h Camera.h Intersect.h Shape.h Triangle.h Sphere.h TriNormal.h
 	$(CC) $(CFLAGS) $(INCFLAGS) -c Scene.cpp 
 Film.o: Film.cpp Film.h Color.h
 	$(CC) $(CFLAGS) $(INCFLAGS) -c Film.cpp
