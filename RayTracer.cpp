@@ -22,10 +22,12 @@ bool RayTracer::blockedByObject(Ray *r, Shape* shape){
 	for(;itStart != itEnd; itStart++){
 		Shape *current = *itStart;
 		//std::cout << "i am a " << this << " compared to " << current << std::endl;
-		if ( (current != shape) &&
-		     (*itStart)->intersect(*r).isHit() ) {
+		if (current != shape) {
+		  Intersect curr = (*itStart)->intersect(*r);
+                  if (curr.isHit() && (curr.getT() < r->getTMAX())) {
 			//std::cout << "i am blocked" << std::endl;
 			return true;
+                  }
 		}
 	}
 	return false;
@@ -121,7 +123,7 @@ Intersect RayTracer::closestShape(Ray r){
 //cout << "magic9" << endl;
 	//vector<Shape *> sceneShapes = scene.getShapes();
 	//cout << "Scene Shine: " << sceneShapes[0]->getShininess() << endl;
-	Intersect closest = Intersect(Intersect());
+	Intersect closest = Intersect();
 	for(;itStart != itEnd; itStart++){
 //cout << "magic10" << endl;
 		Intersect currentIntersect = (*itStart)->intersect(r);

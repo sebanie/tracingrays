@@ -223,7 +223,7 @@ void Scene::parse(const char * filename)
             vec3 pt = vec3(values[0], values[1], values[2]);
             pt = vec3(transfstack.top() * vec4(pt, 1.0));
             Color color = Color(values[3], values[4], values[5]);
-            lights->push_back(new PointLight(color, Point(pt)));
+            lights->push_back(new PointLight(color, Point(pt), attenuation));
           }
         }
 

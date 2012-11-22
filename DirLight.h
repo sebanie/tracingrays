@@ -10,6 +10,7 @@ class DirLight : public Light {
 		Direction _dir;
 	public:
 		DirLight(Color color, Direction dir);
+		vec3 getPosition();
 		virtual vec3 getDirection(Point ignored);
 		void generateLightRay(Intersect &inters, Ray *ray);
 };

@@ -4,6 +4,12 @@ DirLight::DirLight(Color color, Direction dir) {
         dir.normalize();
 	_dir = dir;
 	lightColor = color;
+        attenuation = vec3(1.0, 0, 0);
+}
+
+vec3 DirLight::getPosition(void)
+{
+  return vec3(0, 0, 0);
 }
 
 vec3 DirLight::getDirection(Point ignored) {
@@ -12,7 +18,7 @@ vec3 DirLight::getDirection(Point ignored) {
 
 void DirLight::generateLightRay(Intersect &inters, Ray *ray)
 {
-	vec3 rayDir = _dir.getDir();
+	vec3 rayDir = glm::normalize(_dir.getDir());
 	ray->setDir(_dir);
 
 	vec3 lraypt = inters.getPosition().getPoint() + (0.0001f * rayDir);
