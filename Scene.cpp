@@ -89,7 +89,7 @@ void Scene::render(){
     camera->generateRay(curSample, &r);
 		//cout << "shine: " << (*shapes)[0]->getShininess() << endl;
 		Color outputColor = Color();
-                rt->trace(r, 1, outputColor);
+                rt->trace(r, maxDepth, outputColor);
 //cout << "you say goodbye" << endl;
                 //Color outputColor = Color(0, 0, 0);
 		film->put(curSample, outputColor);   //this line messes up specifically.  can't seem to use outputColor maybe?
