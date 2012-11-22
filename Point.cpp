@@ -40,9 +40,9 @@ void Point::add(Direction* dir, Point &result) {
   result.setPoint(newx, newy, newz);
 }
 
-float Point::dist(Point* pt)
+float Point::dist(vec3 pt)
 {
-  return glm::distance(mypoint, pt->getPoint());
+  return glm::distance(mypoint, pt);
 }
 
 Point::~Point() {
