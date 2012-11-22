@@ -6,7 +6,7 @@ Point::Point(void)
 }
 
 Point::Point(vec3 pos) {
-  mypoint = pos;
+  mypoint = vec3(pos.x, pos.y, pos.z);
 }
 
 Point::Point(float x, float y, float z) {

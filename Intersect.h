@@ -36,8 +36,8 @@ class Intersect{
     t = 99999.9;
   }
   Intersect(Point pos, Direction norm, Shape *s, float tVal){
-    position = pos;
-    normal = norm;
+    position = Point(pos.x(), pos.y(), pos.z());
+    normal = Direction(norm.x(), norm.y(), norm.z());
     t = tVal;
     shape = s;
     hit = true;

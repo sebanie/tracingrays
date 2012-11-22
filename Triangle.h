@@ -41,6 +41,8 @@ class Triangle : public Shape{
     if ( (glm::dot(glm::cross(b - a, intersectPoint - a), normal) >= 0.0) &&
 	 (glm::dot(glm::cross(c - b, intersectPoint - b), normal) >= 0.0) &&
 	 (glm::dot(glm::cross(a - c, intersectPoint - c), normal) >= 0.0) ) {
+
+    //cout << "tri tri world intersect: " << intersectPoint.x << intersectPoint.y << intersectPoint.z << endl;
 //cout << "allo" << endl;
       return Intersect(Point(intersectPoint), Direction(normal), (Shape *)this, t);
     } else {

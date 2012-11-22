@@ -50,7 +50,7 @@ void RayTracer::trace(Ray r, int lvl, Color& outputColor){
     //vec3 reflectedDir = 2*glm::dot(norm, glm::normalize(r.getDir())) * norm;
     //reflectedDir = glm::normalize(r.getDir() - reflectedDir);
 
-    vec3 reflectedDir = glm::reflect(glm::normalize(r.getDir()), glm::normalize(norm));
+    vec3 reflectedDir = glm::normalize(glm::reflect(glm::normalize(r.getDir()), glm::normalize(norm)));
 
 //cout << "magic5" << endl;
 
@@ -85,7 +85,8 @@ void RayTracer::trace(Ray r, int lvl, Color& outputColor){
     result += currShape->getEmission().getColors() + currShape->getAmbient().getColors();
 
     Ray reflect = Ray();
-    vec3 offsetInters = intersect.getPosition().getPoint() + 0.0001f * reflectedDir;
+    //cout << intersect.getPosition().getPoint().y << intersect.getPosition().getPoint().y << intersect.getPosition().getPoint().z << endl << endl;
+    vec3 offsetInters = intersect.getPosition().getPoint() + 0.001f * reflectedDir;
     reflect.setPoint(Point(offsetInters));
     reflect.setDir(Direction(reflectedDir));
     Color reflectedCol = Color(0, 0, 0);
