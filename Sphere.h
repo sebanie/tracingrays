@@ -74,6 +74,8 @@ class Sphere : public Shape{
 
     vec3 intersectPoint = transfRay.getPos() + t*transfRay.getDir();
 
+    //std::cout << "obj space intersection: " << intersectPoint.x << intersectPoint.y << intersectPoint.z << std::endl;
+
     vec3 normal = glm::normalize(intersectPoint - centerPoint);
 
     //std::cout << "norm " << normal.x << normal.y << normal.z << std::endl;
@@ -86,6 +88,8 @@ class Sphere : public Shape{
     intersectPoint = vec3(matrix * vec4(intersectPoint, 1.0));
 
     float worldt = (intersectPoint - r.getPos()).x / r.getDir().x;
+
+    //std::cout << "world space intersection: " << intersectPoint.x << intersectPoint.y << intersectPoint.z << std::endl;
     
    
     // if INTERSECTPOINT is within triangle, then these cross products should
