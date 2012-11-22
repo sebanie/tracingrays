@@ -16,11 +16,13 @@ camera -4 -4 4 1 0 0 0 1 0 30
 # you may want to use dummy (constant) shading, ignoring these lines
 
 ambient .1 .1 .1
-#directional -.5 3 1 0 .5 1 
+diffuse .2 .2 .2 
+specular 0.6 0.6 0.6
+
+
+directional 0 0 3 0 0 1 
 directional -1 0 1 1 0 0 
-#point 0 -2 1 0 .5 0
-diffuse 1 0 0 
-specular 0 0 0
+point -1 0 1 0 1 0
 
 
 vertex -1 -1 0 
@@ -30,5 +32,7 @@ vertex -1 +1 0
 
 tri 0 1 2
 tri 0 2 3
+
+shininess 20
 
 sphere 0 0 0.5 0.7
