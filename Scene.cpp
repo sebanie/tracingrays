@@ -6,6 +6,8 @@
 #include <sstream>
 #include <deque>
 #include <stack>
+#include <stdlib.h>
+#include <time.h>
 #include "Transform.h"
 
 using namespace std;
@@ -77,23 +79,47 @@ void Scene::init()
 
 }
 
+void clamp(Color &col) {
+  vec3 rgbValues = col.getColors();
+  if (rgbValues[0] > 1.0) col.setR(1.0);
+  if (rgbValues[1] > 1.0) col.setG(1.0);
+  if (rgbValues[2] > 1.0) col.setB(1.0);
+}
+
 void Scene::render(){
   Sampler sampler= Sampler(width, height);
   Sample curSample = Sample(0.0, 0.0);
   cout << "current" << sampler.currPixel << endl;
   cout << "total" << sampler.numPixels << endl;
   Ray r;
+  srand((unsigned) time(0));
   int i = 0;
   while(sampler.getSample(&curSample)) {
-		//cout << i << endl;
-    camera->generateRay(curSample, &r);
-		//cout << "shine: " << (*shapes)[0]->getShininess() << endl;
-		Color outputColor = Color();
-                rt->trace(r, maxDepth, outputColor);
-//cout << "you say goodbye" << endl;
-                //Color outputColor = Color(0, 0, 0);
-		film->put(curSample, outputColor);   //this line messes up specifically.  can't seem to use outputColor maybe?
-//cout << "i say hello" << endl;
+    if (i % (sampler.numPixels / 20) == 0) {
+      cout << (i / (sampler.numPixels / 20)) * 5 << "\%\n";
+    }
+    //cout << i << endl;
+    Color outputColor = Color(0, 0, 0);
+    Color intermColor = Color(0, 0, 0);
+    for (int p = 0; p < 4; p++) {
+      for (int q = 0; q < 4; q++) {
+	float ii = curSample.x();
+	float jj = curSample.y();
+	float e1 = (float) (rand() % RAND_MAX);
+	float e2 = (float) (rand() % RAND_MAX);
+	e1 = e1 / ((float) RAND_MAX);
+	e2 = e2 / ((float) RAND_MAX);
+	Sample jitter = Sample(ii + ((p + e1) / 4), jj + ((q + e2) / 4));
+	camera->generateRay(jitter, &r);
+	//cout << "shine: " << (*shapes)[0]->getShininess() << endl;
+	rt->trace(r, maxDepth, outputColor);
+	intermColor += outputColor;
+	//do stuff
+      }
+    }
+    Color finalColor = Color( ( (1.0f / 16.0f) * intermColor.getColors()) );
+    clamp(finalColor);
+    film->put(curSample, finalColor);
     i++;
   }
   film->output("test.png");
@@ -316,9 +342,9 @@ void Scene::parse(const char * filename)
             Point v2 = Point(vec3(transfstack.top() * temp2));
             Point v3 = Point(vec3(transfstack.top() * temp3));
 
-            cout << "v1: " << v1.getPoint().x << v1.getPoint().y << v1.getPoint().z << endl;
-            cout << "v2: " << v2.getPoint().x << v2.getPoint().y << v2.getPoint().z << endl;
-            cout << "v3: " << v3.getPoint().x << v3.getPoint().y << v3.getPoint().z << endl << endl;
+            //cout << "v1: " << v1.getPoint().x << v1.getPoint().y << v1.getPoint().z << endl;
+            //cout << "v2: " << v2.getPoint().x << v2.getPoint().y << v2.getPoint().z << endl;
+            //cout << "v3: " << v3.getPoint().x << v3.getPoint().y << v3.getPoint().z << endl << endl;
 
             shapes->push_back(new Triangle(v1, v2, v3, Color(ambient), Color(diffuse), Color(specular), Color(emission), shine));
           }
@@ -358,7 +384,6 @@ void Scene::parse(const char * filename)
 	    float sz = values[2];
 	    mat4 scale = Transform::scale(sx, sy, sz);
 	    rightmultiply(scale, transfstack);
-cout << scale[0][0] << " " << scale[1][1] << " " << scale[2][2] << endl;
           }
         }
         else if (cmd == "rotate") {

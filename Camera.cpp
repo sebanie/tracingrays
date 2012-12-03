@@ -10,8 +10,8 @@ void Camera::generateRay(Sample &sample, Ray* ray)
   vec3 u = glm::normalize(glm::cross(_up, w));
   vec3 v = glm::cross(w, u);
 
-  float j = (float) sample.x() + 0.5;
-  float i = ((float) _height) - ((float) sample.y()) - 0.5;
+  float j = (float) sample.x();
+  float i = ((float) _height) - ((float) sample.y());
 
   float halfwidth = ((float) _width) / 2.0;
   float halfheight = ((float) _height) / 2.0;
