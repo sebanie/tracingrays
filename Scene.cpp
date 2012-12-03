@@ -7,6 +7,8 @@
 #include <sstream>
 #include <deque>
 #include <stack>
+#include <stdlib.h>
+#include <time.h>
 #include "Transform.h"
 
 using namespace std;
@@ -78,26 +80,78 @@ void Scene::init()
 
 }
 
+void clamp(Color &col) {
+  vec3 rgbValues = col.getColors();
+  if (rgbValues[0] > 1.0) col.setR(1.0);
+  if (rgbValues[1] > 1.0) col.setG(1.0);
+  if (rgbValues[2] > 1.0) col.setB(1.0);
+}
+
 void Scene::render(){
   Sampler sampler= Sampler(width, height);
   Sample curSample = Sample(0.0, 0.0);
   cout << "current" << sampler.currPixel << endl;
   cout << "total" << sampler.numPixels << endl;
-  Ray r;
+  Ray r, dofray;
+  srand((unsigned) time(0));
   int i = 0;
   while(sampler.getSample(&curSample)) {
-		if((i % (sampler.numPixels/20)) == 0){
-			cout << 5*(i/(sampler.numPixels/20)) << "\%" << endl;
-		}
-		//cout << i << endl;
-    camera->generateRay(curSample, &r);
-		//cout << "shine: " << (*shapes)[0]->getShininess() << endl;
-		Color outputColor = Color();
-                rt->trace(r, maxDepth, outputColor);
-//cout << "you say goodbye" << endl;
-                //Color outputColor = Color(0, 0, 0);
-		film->put(curSample, outputColor);   //this line messes up specifically.  can't seem to use outputColor maybe?
-//cout << "i say hello" << endl;
+    if (i % (sampler.numPixels / 20) == 0) {
+      cout << (i / (sampler.numPixels / 20)) * 5 << "\%\n";
+    }
+    //cout << i << endl;
+    Color outputColor = Color(0, 0, 0);
+    Color intermColor = Color(0, 0, 0);
+    Color dofColor = Color(0, 0, 0);
+    for (int p = 0; p < 2; p++) {
+      for (int q = 0; q < 2; q++) {
+	float ii = curSample.x();
+	float jj = curSample.y();
+	float e1 = (float) (rand() % RAND_MAX);
+	float e2 = (float) (rand() % RAND_MAX);
+	e1 = e1 / ((float) RAND_MAX);
+	e2 = e2 / ((float) RAND_MAX);
+
+	Sample jitter = Sample(ii + ((p + e1) / 2), jj + ((q + e2) / 2));
+	camera->generateRay(jitter, &r);
+
+	
+	vec3 focalpt = camera->findFocalPt(r, 3);
+	//cout << "my focal point! " << focalpt.x << " " <<  focalpt.y << " " << focalpt.z << endl;
+
+	//*
+
+	for (int k = 0; k < 4; k++) {
+	  for (int l = 0; l < 4; l++) {
+	    float jitI = jitter.x();
+	    float jitJ = jitter.y();
+	    float e3 = (float) (rand() % RAND_MAX);
+	    float e4 = (float) (rand() % RAND_MAX);
+	    e3 = e3 / ((float) RAND_MAX);
+	    e4 = e4 / ((float) RAND_MAX);
+	    //Sample dofSample =
+	    //  Sample(jitI + k + e1 - 1.f, jitJ + l + e2 - 1.f);
+	    Sample dofSample =
+	      Sample( jitI + (200 * ((k + e3) / 4.f)) - 100.f,
+		      jitJ + (200 * ((l + e4) / 4.f)) - 100.f);
+	    camera->generateDOFRay(dofSample, &dofray, focalpt);
+	    rt->trace(dofray, 1, dofColor);
+	    outputColor += dofColor;
+	    //fuck
+	  }
+	}
+
+	outputColor *= (1.0 / 16.0);
+	//clamp(outputColor);
+	
+
+	//rt->trace(r, maxDepth, outputColor);
+	intermColor += outputColor;
+      }
+    }
+    Color finalColor = Color( ( (1.0f / 4.0f) * intermColor.getColors()) );
+    clamp(finalColor);
+    film->put(curSample, finalColor);
     i++;
   }
   film->output("test.png");
@@ -320,9 +374,9 @@ void Scene::parse(const char * filename)
             Point v2 = Point(vec3(transfstack.top() * temp2));
             Point v3 = Point(vec3(transfstack.top() * temp3));
 
-//            cout << "v1: " << v1.getPoint().x << v1.getPoint().y << v1.getPoint().z << endl;
-//            cout << "v2: " << v2.getPoint().x << v2.getPoint().y << v2.getPoint().z << endl;
-//            cout << "v3: " << v3.getPoint().x << v3.getPoint().y << v3.getPoint().z << endl << endl;
+            //cout << "v1: " << v1.getPoint().x << v1.getPoint().y << v1.getPoint().z << endl;
+            //cout << "v2: " << v2.getPoint().x << v2.getPoint().y << v2.getPoint().z << endl;
+            //cout << "v3: " << v3.getPoint().x << v3.getPoint().y << v3.getPoint().z << endl << endl;
 
             shapes->push_back(new Triangle(v1, v2, v3, Color(ambient), Color(diffuse), Color(specular), Color(emission), shine));
           }
@@ -362,7 +416,6 @@ void Scene::parse(const char * filename)
 	    float sz = values[2];
 	    mat4 scale = Transform::scale(sx, sy, sz);
 	    rightmultiply(scale, transfstack);
-//cout << scale[0][0] << " " << scale[1][1] << " " << scale[2][2] << endl;
           }
         }
         else if (cmd == "rotate") {

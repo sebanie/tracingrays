@@ -41,6 +41,13 @@ void Ray::setTMAX(float tmax)
   _tMax = tmax;
 }
 
+
+void Ray::setDist(float dist)
+{
+  _dist = dist;
+}
+
+
 vec3 Ray::getPos(void)
 {
   return _pt.getPoint();
@@ -59,6 +66,11 @@ float Ray::getTMIN(void)
 float Ray::getTMAX(void)
 {
   return _tMax;
+}
+
+float Ray::getDist(void)
+{
+  return _dist;
 }
 
 Ray Ray::transform(mat4 matrix)

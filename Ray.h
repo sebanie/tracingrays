@@ -16,7 +16,7 @@ class Ray
  private:
   Point _pt;
   Direction _dir;
-  float _tMin, _tMax;
+  float _tMin, _tMax, _dist;
   
  public:
   Ray(void);
@@ -25,10 +25,12 @@ class Ray
   void setDir(Direction dir);
   void setTMIN(float tmin);
   void setTMAX(float tmax);
+  void setDist(float dist);
   vec3 getPos(void);
   vec3 getDir(void);
   float getTMIN(void);
   float getTMAX(void);
+  float getDist(void);
   Ray transform(mat4 matrix);
   virtual ~Ray(void);
 };

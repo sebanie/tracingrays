@@ -21,6 +21,8 @@ class Camera
   vec3 _up;
   float _fovy, _fovx;
   int _height, _width;
+  vec3 w, u, v;
+  float halfwidth, halfheight;
   //mat4 cam2world, world2cam;
   
  public:
@@ -29,6 +31,8 @@ class Camera
   ~Camera(void);
   void generateRay(Sample &sample, Ray* ray);
   vec3 getCameraPos(void);
+  void generateDOFRay(Sample &sample, Ray* ray, vec3 focalpt);
+  vec3 findFocalPt(Ray &ray, float focal);
   
 };
 
