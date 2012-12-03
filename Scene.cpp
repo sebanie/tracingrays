@@ -91,7 +91,7 @@ void Scene::render(){
   Sample curSample = Sample(0.0, 0.0);
   cout << "current" << sampler.currPixel << endl;
   cout << "total" << sampler.numPixels << endl;
-  Ray r;
+  Ray r, dofray;
   srand((unsigned) time(0));
   int i = 0;
   while(sampler.getSample(&curSample)) {
@@ -101,23 +101,54 @@ void Scene::render(){
     //cout << i << endl;
     Color outputColor = Color(0, 0, 0);
     Color intermColor = Color(0, 0, 0);
-    for (int p = 0; p < 4; p++) {
-      for (int q = 0; q < 4; q++) {
+    Color dofColor = Color(0, 0, 0);
+    for (int p = 0; p < 2; p++) {
+      for (int q = 0; q < 2; q++) {
 	float ii = curSample.x();
 	float jj = curSample.y();
 	float e1 = (float) (rand() % RAND_MAX);
 	float e2 = (float) (rand() % RAND_MAX);
 	e1 = e1 / ((float) RAND_MAX);
 	e2 = e2 / ((float) RAND_MAX);
-	Sample jitter = Sample(ii + ((p + e1) / 4), jj + ((q + e2) / 4));
+
+	Sample jitter = Sample(ii + ((p + e1) / 2), jj + ((q + e2) / 2));
 	camera->generateRay(jitter, &r);
-	//cout << "shine: " << (*shapes)[0]->getShininess() << endl;
-	rt->trace(r, maxDepth, outputColor);
+
+	
+	vec3 focalpt = camera->findFocalPt(r, 3);
+	//cout << "my focal point! " << focalpt.x << " " <<  focalpt.y << " " << focalpt.z << endl;
+
+	//*
+
+	for (int k = 0; k < 4; k++) {
+	  for (int l = 0; l < 4; l++) {
+	    float jitI = jitter.x();
+	    float jitJ = jitter.y();
+	    float e3 = (float) (rand() % RAND_MAX);
+	    float e4 = (float) (rand() % RAND_MAX);
+	    e3 = e3 / ((float) RAND_MAX);
+	    e4 = e4 / ((float) RAND_MAX);
+	    //Sample dofSample =
+	    //  Sample(jitI + k + e1 - 1.f, jitJ + l + e2 - 1.f);
+	    Sample dofSample =
+	      Sample( jitI + (200 * ((k + e3) / 4.f)) - 100.f,
+		      jitJ + (200 * ((l + e4) / 4.f)) - 100.f);
+	    camera->generateDOFRay(dofSample, &dofray, focalpt);
+	    rt->trace(dofray, 1, dofColor);
+	    outputColor += dofColor;
+	    //fuck
+	  }
+	}
+
+	outputColor *= (1.0 / 16.0);
+	//clamp(outputColor);
+	
+
+	//rt->trace(r, maxDepth, outputColor);
 	intermColor += outputColor;
-	//do stuff
       }
     }
-    Color finalColor = Color( ( (1.0f / 16.0f) * intermColor.getColors()) );
+    Color finalColor = Color( ( (1.0f / 4.0f) * intermColor.getColors()) );
     clamp(finalColor);
     film->put(curSample, finalColor);
     i++;
