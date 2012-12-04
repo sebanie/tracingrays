@@ -53,6 +53,7 @@ class Scene
        specular,
        attenuation;
   float shine;
+  float aperture, halfap, focalLength;
 
  public:
   Scene();

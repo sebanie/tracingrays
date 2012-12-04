@@ -16,6 +16,7 @@ class Shape{
  protected:
   Color diffuse, specular, emission, ambient;
   float shininess;
+  float refraction;
   
   void setMaterialProperties(Color a, Color d, Color s, Color e, float shine){
     ambient = a;
