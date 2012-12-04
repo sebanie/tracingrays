@@ -77,6 +77,9 @@ void Scene::init()
   diffuse = vec3(0.0);
   specular = vec3(0.0);
   shine = 0.f;
+  aperture = 200.f;
+  halfap = 100.f;
+  focalLength = 3;
 
 }
 
@@ -102,9 +105,9 @@ void Scene::render(){
     //cout << i << endl;
     Color outputColor = Color(0, 0, 0);
     Color intermColor = Color(0, 0, 0);
-    Color dofColor = Color(0, 0, 0);
-    for (int p = 0; p < 2; p++) {
-      for (int q = 0; q < 2; q++) {
+    //Color dofColor = Color(0, 0, 0);
+    for (int p = 0; p < 8; p++) {
+      for (int q = 0; q < 8; q++) {
 	float ii = curSample.x();
 	float jj = curSample.y();
 	float e1 = (float) (rand() % RAND_MAX);
@@ -112,14 +115,26 @@ void Scene::render(){
 	e1 = e1 / ((float) RAND_MAX);
 	e2 = e2 / ((float) RAND_MAX);
 
-	Sample jitter = Sample(ii + ((p + e1) / 2), jj + ((q + e2) / 2));
+	Sample jitter = Sample(ii + ((p + e1) / 8), jj + ((q + e2) / 8));
 	camera->generateRay(jitter, &r);
 
 	
-	vec3 focalpt = camera->findFocalPt(r, 3);
+	vec3 focalpt = camera->findFocalPt(r, focalLength);
 	//cout << "my focal point! " << focalpt.x << " " <<  focalpt.y << " " << focalpt.z << endl;
 
-	//*
+	float jitI = jitter.x();
+	float jitJ = jitter.y();
+	float e3 = (float) (rand() % RAND_MAX);
+	float e4 = (float) (rand() % RAND_MAX);
+	e3 = e3 / ((float) RAND_MAX);
+	e4 = e4 / ((float) RAND_MAX);
+
+	Sample dofSample =
+	  Sample( jitI + (aperture * ((p + e3) / 8.f)) - halfap,
+		  jitJ + (aperture * ((q + e4) / 8.f)) - halfap);
+	camera->generateDOFRay(dofSample, &dofray, focalpt);
+
+	/*
 
 	for (int k = 0; k < 4; k++) {
 	  for (int l = 0; l < 4; l++) {
@@ -135,7 +150,7 @@ void Scene::render(){
 	      Sample( jitI + (200 * ((k + e3) / 4.f)) - 100.f,
 		      jitJ + (200 * ((l + e4) / 4.f)) - 100.f);
 	    camera->generateDOFRay(dofSample, &dofray, focalpt);
-	    rt->trace(dofray, 1, dofColor);
+	    rt->trace(dofray, maxDepth, dofColor);
 	    outputColor += dofColor;
 	    //fuck
 	  }
@@ -144,12 +159,13 @@ void Scene::render(){
 	outputColor *= (1.0 / 16.0);
 	//clamp(outputColor);
 	
+	*/
 
-	//rt->trace(r, maxDepth, outputColor);
+	rt->trace(dofray, maxDepth, outputColor);
 	intermColor += outputColor;
       }
     }
-    Color finalColor = Color( ( (1.0f / 4.0f) * intermColor.getColors()) );
+    Color finalColor = Color( ( (1.0f / 64.0f) * intermColor.getColors()) );
     clamp(finalColor);
     film->put(curSample, finalColor);
     i++;
@@ -328,6 +344,15 @@ void Scene::parse(const char * filename)
             vec3 up = glm::normalize(vec3(values[6], values[7], values[8]));
             float fov = values[9];
             camera = new Camera(lookfrom, lookat, up, fov, height, width);
+          }
+        }
+
+        else if (cmd == "lens") {
+          validinput = readvals(s,2,values) ;
+          if (validinput) {
+            aperture = values[0];
+	    halfap = aperture * 0.5;
+            focalLength = values[1];
           }
         }
 
