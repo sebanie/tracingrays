@@ -3,6 +3,7 @@
 #include "Intersect.h"
 #include "Color.h"
 #include <stdio.h>
+#include <math.h>
 
 RayTracer::RayTracer(vector<Shape *>* shapes, vector<Light *>* lights, vec3 camPosn)
 {
@@ -33,31 +34,55 @@ bool RayTracer::blockedByObject(Ray *r, Shape* shape){
 	return false;
 }
 
+bool refract(vec3 norm, vec3 incident, float ind1, float ind2, Ray &result)
+{
+  norm = glm::normalize(norm);
+  incident = glm::normalize(incident);
+  float n = ind1 / ind2;
+  float cosI = glm::dot(norm, incident);
+  float sinT2 = n * n * (1.0 - (cosI * cosI));
+  if (sinT2 > 1.0) {
+    return false;
+  }
+  float cosT = sqrt(1.0 - sinT2);
+  vec3 term = n * (incident - (cosI * norm));
+  vec3 refrDir = glm::normalize( term - (cosT * norm) );
+  result.setDir(refrDir);
+  result.setTMIN(0.00001);
+  result.setTMAX(8888);
+  result.setIndex(ind2);
+  return true;
+}
 
+/*
+float schlickApprox(vec3 norm, vec3 incident, float ind1, float ind2)
+{
+  float n = ind1 / ind2;
 
-void RayTracer::trace(Ray r, int lvl, Color& outputColor){
+}
+*/
+
+void RayTracer::trace(Ray r, int lvl, Color& outputColor)
+{
   Color black = Color(0.0, 0.0, 0.0);
-//cout << "magic1" << endl;
+
   if(lvl == 0){
     outputColor.setColors(0, 0, 0);
     return;
   }
-//cout << "magic2" << endl;
+
   Intersect intersect = closestShape(r);
-//cout << "magic3" << endl;
 
   if(intersect.isHit()){
-//cout << "magic4" << endl;
-    vec3 norm = intersect.getNormal().getDir();
+
+    vec3 norm = glm::normalize(intersect.getNormal().getDir());
+    vec3 incident = glm::normalize(r.getDir());
     //vec3 reflectedDir = 2*glm::dot(norm, glm::normalize(r.getDir())) * norm;
     //reflectedDir = glm::normalize(r.getDir() - reflectedDir);
 
-    vec3 reflectedDir = glm::normalize(glm::reflect(glm::normalize(r.getDir()), glm::normalize(norm)));
-
-//cout << "magic5" << endl;
+    vec3 reflectedDir = glm::normalize(glm::reflect(incident, norm));
 
     Shape *currShape = intersect.getShape();
-//cout << "oh god why " << _lights->empty() << endl;
     if (_lights->empty()) {
       outputColor.setColors(currShape->getAmbient());
       return;
@@ -68,14 +93,10 @@ void RayTracer::trace(Ray r, int lvl, Color& outputColor){
 
     for (vector<Light *>::iterator lightIter = _lights->begin();
          lightIter != _lights->end(); lightIter++) {
-//cout << "yo what's up" << endl;
       Light *currLight = *lightIter;
-//cout << "i hate my life" << endl;
       Ray *lightray = new Ray();
       currLight->generateLightRay(intersect, lightray);
-//cout << "so sad" << endl;
       if (!blockedByObject(lightray, currShape)) {
-//cout << "sadness" << endl;
         currShape->intersectColor(intersect, currLight, cam, contribution);
         result += contribution;
       }
@@ -83,24 +104,51 @@ void RayTracer::trace(Ray r, int lvl, Color& outputColor){
 
     }
    
-//cout << "did i get here?" << endl;
     result += currShape->getEmission().getColors() + currShape->getAmbient().getColors();
 
     Ray reflect = Ray();
-    //cout << intersect.getPosition().getPoint().y << intersect.getPosition().getPoint().y << intersect.getPosition().getPoint().z << endl << endl;
     vec3 offsetInters = intersect.getPosition().getPoint() + 0.001f * reflectedDir;
     reflect.setPoint(Point(offsetInters));
     reflect.setDir(Direction(reflectedDir));
     Color reflectedCol = Color(0, 0, 0);
     trace(reflect, lvl - 1, reflectedCol);
 
+    //float schlick = 1.0;
+    Color refractedCol = Color(0, 0, 0);
+    if (currShape->getIndex() != 0.0) {
+      vec3 normal = norm;
+      Ray refractRay = Ray();
+      refractRay.setPoint
+	( Point( intersect.getPosition().getPoint() + 0.01f * refractRay.getDir() ) );
+
+      //get index1 and index2 here
+      float index1 = r.getIndex();
+      float index2 = currShape->getIndex();
+      if (index1 != 1.0) {
+	index2 = 1.0;
+	normal = -normal;
+      }
+      if (refract(normal, incident, index1, index2, refractRay)) {
+      
+	trace(refractRay, lvl - 1, refractedCol);
+	//cout << "refractcol " << refractedCol.getColors().x << refractedCol.getColors().y << refractedCol.getColors().z << endl;
+	float s = glm::length(intersect.getPosition().getPoint() - r.getPos());
+	float beer = exp( - log(1.1) * s);
+	//	cout << "beer " << beer << endl;
+	refractedCol *= beer;
+      }
+    }
+    
+
     result += (currShape->getSpecular().getColors() * reflectedCol.getColors());
+    result += refractedCol.getColors();
+
+    //cout << "result stuff: " << result.x << " " << result.y << " " << result.z << endl;
 
     if (result[0] > 1.0) result[0] = 1.0;
     if (result[1] > 1.0) result[1] = 1.0;
     if (result[2] > 1.0) result[2] = 1.0;
     Color finalColor = Color(result.x, result.y, result.z);
-//cout << "finishes color computation" << endl;
     outputColor.setColors(finalColor);
     return;
 

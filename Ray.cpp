@@ -6,6 +6,7 @@ Ray::Ray(void)
   _dir = Direction(0, 0, 0);
   _tMin = 0;
   _tMax = 9999;
+  _index = 1.0;
 }
 
 Ray::Ray(Point pt, Direction dir, float tMin, float tMax)
@@ -14,6 +15,16 @@ Ray::Ray(Point pt, Direction dir, float tMin, float tMax)
   _dir = dir;
   _tMin = tMin;
   _tMax = tMax;
+  _index = 1.0;
+}
+
+Ray::Ray(Point pt, Direction dir, float tMin, float tMax, float index)
+{ 
+  _pt = pt;
+  _dir = dir;
+  _tMin = tMin;
+  _tMax = tMax;
+  _index = index;
 }
 
 Ray::~Ray(void)
@@ -48,6 +59,12 @@ void Ray::setDist(float dist)
 }
 
 
+void Ray::setIndex(float ind)
+{
+  _index = ind;
+}
+
+
 vec3 Ray::getPos(void)
 {
   return _pt.getPoint();
@@ -71,6 +88,11 @@ float Ray::getTMAX(void)
 float Ray::getDist(void)
 {
   return _dist;
+}
+
+float Ray::getIndex(void)
+{
+  return _index;
 }
 
 Ray Ray::transform(mat4 matrix)

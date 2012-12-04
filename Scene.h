@@ -52,7 +52,7 @@ class Scene
        diffuse,
        specular,
        attenuation;
-  float shine;
+  float shine, index;
   float aperture, halfap, focalLength;
 
  public:

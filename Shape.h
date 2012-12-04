@@ -12,11 +12,10 @@ class Light;
 using namespace std;
 
 class Shape{
-  //bool blockedByObject(Ray *r);
  protected:
   Color diffuse, specular, emission, ambient;
   float shininess;
-  float refraction;
+  float index;
   
   void setMaterialProperties(Color a, Color d, Color s, Color e, float shine){
     ambient = a;
@@ -41,6 +40,9 @@ class Shape{
   }
   float getShininess(){
     return shininess;
+  }
+  float getIndex(){
+    return index;
   }
   virtual Intersect intersect(Ray r) = 0;
   void intersectColor(Intersect intersection, Light* currLight, vec3 camPosn, vec3 &result);
