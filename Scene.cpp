@@ -77,9 +77,10 @@ void Scene::init()
   diffuse = vec3(0.0);
   specular = vec3(0.0);
   shine = 0.f;
-  aperture = 200.f;
-  halfap = 100.f;
+  aperture = 0.0;
+  halfap = 0.0;
   focalLength = 3;
+  index = 0.0;
 
 }
 
@@ -118,50 +119,27 @@ void Scene::render(){
 	Sample jitter = Sample(ii + ((p + e1) / 8), jj + ((q + e2) / 8));
 	camera->generateRay(jitter, &r);
 
-	
-	vec3 focalpt = camera->findFocalPt(r, focalLength);
-	//cout << "my focal point! " << focalpt.x << " " <<  focalpt.y << " " << focalpt.z << endl;
+	if (aperture != 0.0) {
 
-	float jitI = jitter.x();
-	float jitJ = jitter.y();
-	float e3 = (float) (rand() % RAND_MAX);
-	float e4 = (float) (rand() % RAND_MAX);
-	e3 = e3 / ((float) RAND_MAX);
-	e4 = e4 / ((float) RAND_MAX);
+	  vec3 focalpt = camera->findFocalPt(r, focalLength);
+	  //cout << "my focal point! " << focalpt.x << " " <<  focalpt.y << " " << focalpt.z << endl;
 
-	Sample dofSample =
-	  Sample( jitI + (aperture * ((p + e3) / 8.f)) - halfap,
-		  jitJ + (aperture * ((q + e4) / 8.f)) - halfap);
-	camera->generateDOFRay(dofSample, &dofray, focalpt);
+	  float jitI = jitter.x();
+	  float jitJ = jitter.y();
+	  float e3 = (float) (rand() % RAND_MAX);
+	  float e4 = (float) (rand() % RAND_MAX);
+	  e3 = e3 / ((float) RAND_MAX);
+	  e4 = e4 / ((float) RAND_MAX);
 
-	/*
+	  Sample dofSample =
+	    Sample( jitI + (aperture * ((p + e3) / 8.f)) - halfap,
+		    jitJ + (aperture * ((q + e4) / 8.f)) - halfap);
+	  camera->generateDOFRay(dofSample, &dofray, focalpt);
+	  rt->trace(dofray, maxDepth, outputColor);
 
-	for (int k = 0; k < 4; k++) {
-	  for (int l = 0; l < 4; l++) {
-	    float jitI = jitter.x();
-	    float jitJ = jitter.y();
-	    float e3 = (float) (rand() % RAND_MAX);
-	    float e4 = (float) (rand() % RAND_MAX);
-	    e3 = e3 / ((float) RAND_MAX);
-	    e4 = e4 / ((float) RAND_MAX);
-	    //Sample dofSample =
-	    //  Sample(jitI + k + e1 - 1.f, jitJ + l + e2 - 1.f);
-	    Sample dofSample =
-	      Sample( jitI + (200 * ((k + e3) / 4.f)) - 100.f,
-		      jitJ + (200 * ((l + e4) / 4.f)) - 100.f);
-	    camera->generateDOFRay(dofSample, &dofray, focalpt);
-	    rt->trace(dofray, maxDepth, dofColor);
-	    outputColor += dofColor;
-	    //fuck
-	  }
+	} else {
+	  rt->trace(r, maxDepth, outputColor);
 	}
-
-	outputColor *= (1.0 / 16.0);
-	//clamp(outputColor);
-	
-	*/
-
-	rt->trace(dofray, maxDepth, outputColor);
 	intermColor += outputColor;
       }
     }
@@ -332,6 +310,10 @@ void Scene::parse(const char * filename)
           validinput = readvals(s, 1, values) ; 
           if (validinput) shine = values[0] ; 
         }
+        else if (cmd == "index") {
+          validinput = readvals(s, 1, values) ; 
+          if (validinput) index = values[0] ; 
+        }
 
 
         //CAMERA  DONE
@@ -369,7 +351,10 @@ void Scene::parse(const char * filename)
                                          Color(ambient),
                                          Color(diffuse),
                                          Color(specular),
-                                         Color(emission), shine, transfstack.top())); 
+                                         Color(emission),
+					 shine,
+					 transfstack.top(),
+					 index)); 
           }
         }
 
@@ -403,7 +388,7 @@ void Scene::parse(const char * filename)
             //cout << "v2: " << v2.getPoint().x << v2.getPoint().y << v2.getPoint().z << endl;
             //cout << "v3: " << v3.getPoint().x << v3.getPoint().y << v3.getPoint().z << endl << endl;
 
-            shapes->push_back(new Triangle(v1, v2, v3, Color(ambient), Color(diffuse), Color(specular), Color(emission), shine));
+            shapes->push_back(new Triangle(v1, v2, v3, Color(ambient), Color(diffuse), Color(specular), Color(emission), shine, index));
           }
         }
         else if (cmd == "trinormal") {

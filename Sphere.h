@@ -18,12 +18,13 @@ class Sphere : public Shape{
   float radius;
   mat4 matrix, inverse;
  public:
-  Sphere(Point c, float r, Color a, Color d, Color s, Color e, float shine, mat4 transf){
+  Sphere(Point c, float r, Color a, Color d, Color s, Color e, float shine, mat4 transf, float ind){
     center = c;
     radius = r;
     setMaterialProperties(a, d, s, e, shine);
     matrix = transf;
     inverse = glm::inverse(transf);
+    index = ind;
     //std::cout << inverse[2][2] << std::endl;
   }
 

@@ -11,11 +11,12 @@ class Triangle : public Shape{
  protected:
   Point v1, v2, v3;
  public:
-  Triangle(Point vert1, Point vert2, Point vert3, Color a, Color d, Color s, Color e, float shine){
+  Triangle(Point vert1, Point vert2, Point vert3, Color a, Color d, Color s, Color e, float shine, float ind){
     v1 = vert1;
     v2 = vert2;
     v3 = vert3;
     setMaterialProperties(a, d, s, e, shine);
+    index = ind;
   }
 
   Triangle() {}
