@@ -2,8 +2,8 @@
 
 size 640 480 
 
-maxdepth 1
-#lens 200 3
+maxdepth 3
+lens 200 3
 
 camera 0 0 4 0 0 0 0 1 0 30
 
@@ -23,16 +23,14 @@ index 1.2
 
 sphere 0 -.1 0 0.5
 sphere -.75 -.1 -1 0.5
-#sphere 0.75 -.1 -1 0.5
+sphere 0.75 -.1 -1 0.5
 #sphere -1.25 -.1 -2 0.5
 #sphere 1.25 -.1 -2 0.5
 
 index 0.0
 diffuse .4 .6 0
 
-#sphere 0 -.1 -2 0.5
-#sphere -.75 -.1 0 0.2
-#sphere 0.75 -.1 0 0.2
+sphere -.75 -.1 0 0.2
 
 diffuse 0 0 0
 shininess 0
@@ -47,55 +45,46 @@ tri 0 2 3
 popTransform
 
 # ORANGE
-#emission 0.8 0.4 0
-#pushTransform
-#translate 0 0.6 -4
-#scale 20 0.1 1.0
-#tri 0 1 2
-#tri 0 2 3
-#popTransform
+emission 0.8 0.4 0
+pushTransform
+translate 0 0.6 -4
+scale 20 0.1 1.0
+tri 0 1 2
+tri 0 2 3
+popTransform
 
 # YELLOW
-#emission 0.8 0.8 0
-#pushTransform
-#translate 0 0.2 -4
-#scale 20 0.1 1.0
-#tri 0 1 2
-#tri 0 2 3
-#popTransform
+emission 0.8 0.8 0
+pushTransform
+translate 0 0.2 -4
+scale 20 0.1 1.0
+tri 0 1 2
+tri 0 2 3
+popTransform
 
 # GREEN
-#emission 0 0.8 0.4
-#pushTransform
-#translate 0 -0.2 -4
-#scale 20 0.1 1.0
-#tri 0 1 2
-#tri 0 2 3
-#popTransform
+emission 0 0.8 0.4
+pushTransform
+translate 0 -0.2 -4
+scale 20 0.1 1.0
+tri 0 1 2
+tri 0 2 3
+popTransform
 
 # BLUE
-#emission 0 0.4 0.8
-#pushTransform
-#translate 0 -0.6 -4
-#scale 20 0.1 1.0
-#tri 0 1 2
-#tri 0 2 3
-#popTransform
+emission 0 0.4 0.8
+pushTransform
+translate 0 -0.6 -4
+scale 20 0.1 1.0
+tri 0 1 2
+tri 0 2 3
+popTransform
 
 # PURPLE
 emission 0.4 0 0.8
 pushTransform
 translate 0 -1 -4
 scale 20 0.1 1.0
-tri 0 1 2
-tri 0 2 3
-popTransform
-
-# WHITE BG
-emission 1 1 1
-pushTransform
-translate 0 0 -5
-scale 6 6 1.0
 tri 0 1 2
 tri 0 2 3
 popTransform

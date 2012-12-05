@@ -115,8 +115,8 @@ void Scene::render(){
     Color outputColor = Color(0, 0, 0);
     Color intermColor = Color(0, 0, 0);
     //Color dofColor = Color(0, 0, 0);
-    for (int p = 0; p < 5; p++) {
-      for (int q = 0; q < 5; q++) {
+    for (int p = 0; p < 9; p++) {
+      for (int q = 0; q < 9; q++) {
 	float ii = curSample.x();
 	float jj = curSample.y();
 	float e1 = (float) (rand() % RAND_MAX);
@@ -124,7 +124,7 @@ void Scene::render(){
 	e1 = e1 / ((float) RAND_MAX);
 	e2 = e2 / ((float) RAND_MAX);
 
-	Sample jitter = Sample(ii + ((p + e1) / 5), jj + ((q + e2) / 5));
+	Sample jitter = Sample(ii + ((p + e1) / 9), jj + ((q + e2) / 9));
 	camera->generateRay(jitter, &r);
 
 	if (aperture != 0.0) {
@@ -140,8 +140,8 @@ void Scene::render(){
 	  e4 = e4 / ((float) RAND_MAX);
 
 	  Sample dofSample =
-	    Sample( jitI + (aperture * ((p + e3) / 5.f)) - halfap,
-		    jitJ + (aperture * ((q + e4) / 5.f)) - halfap);
+	    Sample( jitI + (aperture * ((p + e3) / 9.f)) - halfap,
+		    jitJ + (aperture * ((q + e4) / 9.f)) - halfap);
 	  camera->generateDOFRay(dofSample, &dofray, focalpt);
 	  rt->trace(dofray, maxDepth, outputColor);
 
@@ -151,7 +151,7 @@ void Scene::render(){
 	intermColor += outputColor;
       }
     }
-    Color finalColor = Color( ( (1.0f / 25.0f) * intermColor.getColors()) );
+    Color finalColor = Color( ( (1.0f / 81.0f) * intermColor.getColors()) );
     clamp(finalColor);
     film->put(curSample, finalColor);
     i++;
