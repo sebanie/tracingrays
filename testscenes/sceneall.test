@@ -17,13 +17,17 @@ vertex -1 +1 0
 
 ambient 0 0 0
 diffuse 0 0 0 
-specular 0 0 0
+specular 0.1 0.1 0.1
 shininess 10
 index 1.2
 
+pushTransform
+scale 1.7 1.7 0.2
 sphere 0 -.1 0 0.5
-sphere -.75 -.1 -1 0.5
-sphere 0.75 -.1 -1 0.5
+popTransform
+
+sphere -.75 -.1 -1.2 0.5
+sphere 0.75 -.1 -1.2 0.5
 #sphere -1.25 -.1 -2 0.5
 #sphere 1.25 -.1 -2 0.5
 
