@@ -15,52 +15,47 @@ RayTracer::RayTracer(vector<Shape *>* shapes, vector<Light *>* lights, vec3 camP
 
 
 bool RayTracer::blockedByObject(Ray *r, Shape* shape){
-	//vector<Shape *>* sceneShapes = scene.getShapes();
-	vector<Shape *>::iterator itStart = _shapes->begin();
-	vector<Shape *>::iterator itEnd = _shapes->end();
-	//vector<Shape *> sceneShapes = scene.getShapes();
-	//cout << "checking for blocked" << endl;
-	for(;itStart != itEnd; itStart++){
-		Shape *current = *itStart;
-		//std::cout << "i am a " << this << " compared to " << current << std::endl;
-		if (current != shape) {
-		  Intersect curr = (*itStart)->intersect(*r);
-                  if (curr.isHit() && (curr.getT() < r->getTMAX())) {
-			//std::cout << "i am blocked" << std::endl;
-			return true;
-                  }
-		}
-	}
-	return false;
+  vector<Shape *>::iterator itStart = _shapes->begin();
+  vector<Shape *>::iterator itEnd = _shapes->end();
+  for(;itStart != itEnd; itStart++){
+    Shape *current = *itStart;
+    if (current != shape) {
+      Intersect curr = (*itStart)->intersect(*r);
+      if (curr.isHit() && (curr.getT() < r->getTMAX())) {
+	return true;
+      }
+    }
+  }
+  return false;
 }
 
 bool refract(vec3 norm, vec3 incident, float ind1, float ind2, Ray &result)
 {
   norm = glm::normalize(norm);
   incident = glm::normalize(incident);
-  float n = ind1 / ind2;
-  float cosI = glm::dot(norm, incident);
-  float sinT2 = n * n * (1.0 - (cosI * cosI));
-  if (sinT2 > 1.0) {
-    return false;
+  if (ind1 != ind2) {
+    float n = ind1 / ind2;
+    float DdotN = glm::dot(norm, incident);
+    float underSqrt = 1.0 - (n * n * (1.0 - (DdotN * DdotN)));
+    if (underSqrt < 0.0) {
+      return false;
+    }
+    float term1 = sqrt(underSqrt);
+    vec3 term2 = n * (incident - (DdotN * norm));
+    vec3 refrDir = glm::normalize( term2 - (term1 * norm) );
+    result.setDir(refrDir);
+    result.setTMIN(0.00001);
+    result.setTMAX(8888);
+    result.setIndex(ind2);
+    return true;
+  } else {
+    result.setDir(incident);
+    result.setTMIN(0.00001);
+    result.setTMAX(8888);
+    result.setIndex(ind2);
+    return true;
   }
-  float cosT = sqrt(1.0 - sinT2);
-  vec3 term = n * (incident - (cosI * norm));
-  vec3 refrDir = glm::normalize( term - (cosT * norm) );
-  result.setDir(refrDir);
-  result.setTMIN(0.00001);
-  result.setTMAX(8888);
-  result.setIndex(ind2);
-  return true;
 }
-
-/*
-float schlickApprox(vec3 norm, vec3 incident, float ind1, float ind2)
-{
-  float n = ind1 / ind2;
-
-}
-*/
 
 void RayTracer::trace(Ray r, int lvl, Color& outputColor)
 {
@@ -113,15 +108,13 @@ void RayTracer::trace(Ray r, int lvl, Color& outputColor)
     Color reflectedCol = Color(0, 0, 0);
     trace(reflect, lvl - 1, reflectedCol);
 
-    //float schlick = 1.0;
+
+    // REFRACTION STUFF STARTS HERE
+
     Color refractedCol = Color(0, 0, 0);
     if (currShape->getIndex() != 0.0) {
       vec3 normal = norm;
       Ray refractRay = Ray();
-      refractRay.setPoint
-	( Point( intersect.getPosition().getPoint() + 0.01f * refractRay.getDir() ) );
-
-      //get index1 and index2 here
       float index1 = r.getIndex();
       float index2 = currShape->getIndex();
       if (index1 != 1.0) {
@@ -129,15 +122,17 @@ void RayTracer::trace(Ray r, int lvl, Color& outputColor)
 	normal = -normal;
       }
       if (refract(normal, incident, index1, index2, refractRay)) {
-      
+	refractRay.setPoint
+	  ( Point( intersect.getPosition().getPoint() + 0.001f * refractRay.getDir() ) );
 	trace(refractRay, lvl - 1, refractedCol);
-	//cout << "refractcol " << refractedCol.getColors().x << refractedCol.getColors().y << refractedCol.getColors().z << endl;
 	float s = glm::length(intersect.getPosition().getPoint() - r.getPos());
-	float beer = exp( - log(1.1) * s);
-	//	cout << "beer " << beer << endl;
+	float beer = exp( - log(1.1) * s);\
 	refractedCol *= beer;
       }
     }
+
+
+    /////////////////////////
     
 
     result += (currShape->getSpecular().getColors() * reflectedCol.getColors());
@@ -160,34 +155,21 @@ void RayTracer::trace(Ray r, int lvl, Color& outputColor)
 
 Intersect RayTracer::closestShape(Ray r){
 
-
-//cout << "do i got shapes yo?" << _shapes->empty() << endl;
-
-	vector<Shape *>::iterator itStart = _shapes->begin();
-//cout << "magic8" << endl;
-	vector<Shape *>::iterator itEnd = _shapes->end();
-
-
-//cout << "magic9" << endl;
-	//vector<Shape *> sceneShapes = scene.getShapes();
-	//cout << "Scene Shine: " << sceneShapes[0]->getShininess() << endl;
-	Intersect closest = Intersect();
-	for(;itStart != itEnd; itStart++){
-//cout << "magic10" << endl;
-		Intersect currentIntersect = (*itStart)->intersect(r);
-//cout << "magic11" << endl;
-		if(currentIntersect.isHit()){
-//cout << "magic12" << endl;
-//cout << "efja;jkdasd" << endl;
-			if(currentIntersect.getT() < closest.getT()){
-//cout << "magic13" << endl;
-				closest = currentIntersect;
-			}
-		}
-	}
-//cout << "magic14" << endl;
-	return closest;
+  vector<Shape *>::iterator itStart = _shapes->begin();
+  vector<Shape *>::iterator itEnd = _shapes->end();
+  
+  Intersect closest = Intersect();
+  for(;itStart != itEnd; itStart++){
+    Intersect currentIntersect = (*itStart)->intersect(r);
+    if(currentIntersect.isHit()){
+      if(currentIntersect.getT() < closest.getT()){
+	closest = currentIntersect;
+      }
+    }
+  }
+  return closest;
 }
+
 RayTracer::~RayTracer() {
 
 }
