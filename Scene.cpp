@@ -93,12 +93,12 @@ void clamp(Color &col) {
 
 void Scene::render(){
   Sampler sampler= Sampler(width, height);
-  Sample curSample = Sample(0.0, 0.0);
+  Sample curSample = Sample(0.0, 0.0); //private
   cout << "current" << sampler.currPixel << endl;
   cout << "total" << sampler.numPixels << endl;
-  Ray r, dofray;
+  Ray r, dofray; //private
   srand((unsigned) time(0));
-  int i = 0;
+  int i = 0; //private?
 
 
   //while(sampler.getSample(&curSample)) {
