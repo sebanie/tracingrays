@@ -6,7 +6,7 @@ LDFLAGS = -framework GLUT -framework OpenGL -L./osxlib/ \
 		-L"/System/Library/Frameworks/OpenGL.framework/Libraries" \
 		-lGL -lGLU -lm -lstdc++ -lfreeimage
 else
-CFLAGS = -g -DGL_GLEXT_PROTOTYPES 
+CFLAGS = -g -fopenmp -O2 -DGL_GLEXT_PROTOTYPES 
 INCFLAGS = -I./glm-0.9.2.7 -I./include/ -I/usr/X11R6/include -I/sw/include \
 		-I/usr/sww/include -I/usr/sww/pkg/Mesa/include
 LDFLAGS = -L/usr/X11R6/lib -L/sw/lib -L/usr/sww/lib \

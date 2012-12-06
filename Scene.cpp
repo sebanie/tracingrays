@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "Transform.h"
+#include <omp.h>
 
 using namespace std;
 
@@ -100,7 +101,7 @@ void Scene::render(){
   srand((unsigned) time(0));
   int i = 0; //private?
 
-
+# pragma omp parallel for private(curSample, r, dofray) num_threads(8)
   //while(sampler.getSample(&curSample)) {
   for (int sampleX = 0; sampleX < width; sampleX++) {
     for (int sampleY = 0; sampleY < height; sampleY++) {
@@ -108,9 +109,10 @@ void Scene::render(){
       curSample.setY((float) sampleY);
 
 
-    if (i % (sampler.numPixels / 20) == 0) {
+      if (i % (sampler.numPixels / 20) == 0) {
       cout << (i / (sampler.numPixels / 20)) * 5 << "\%\n";
-    }
+      cout << "thread num: " << omp_get_thread_num() << endl;
+      }
     //cout << i << endl;
     Color outputColor = Color(0, 0, 0);
     Color intermColor = Color(0, 0, 0);
