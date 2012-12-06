@@ -111,7 +111,7 @@ void Scene::render(){
 
       if (i % (sampler.numPixels / 20) == 0) {
       cout << (i / (sampler.numPixels / 20)) * 5 << "\%\n";
-      cout << "thread num: " << omp_get_thread_num() << endl;
+      //cout << "thread num: " << omp_get_thread_num() << endl;
       }
     //cout << i << endl;
     Color outputColor = Color(0, 0, 0);
