@@ -2,7 +2,7 @@
 
 size 640 480 
 
-maxdepth 3
+maxdepth 5
 lens 200 3
 
 camera 0 0 4 0 0 0 0 1 0 30
@@ -26,8 +26,8 @@ scale 1.7 1.7 0.2
 sphere 0 0 0 0.5
 popTransform
 
-sphere -.85 -.1 -1.2 0.5
-sphere 0.85 -.1 -1.2 0.5
+sphere -.93 -.5 -1.2 0.42
+sphere 0.93 0.5 -1.2 0.42
 #sphere -1.25 -.1 -2 0.5
 #sphere 1.25 -.1 -2 0.5
 
