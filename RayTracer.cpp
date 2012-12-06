@@ -86,19 +86,20 @@ void RayTracer::trace(Ray r, int lvl, Color& outputColor)
     vec3 result = vec3(0.0, 0.0, 0.0);
     vec3 contribution = vec3(0.0, 0.0, 0.0);
 
+    Ray *lightray = new Ray();
     for (vector<Light *>::iterator lightIter = _lights->begin();
          lightIter != _lights->end(); lightIter++) {
       Light *currLight = *lightIter;
-      Ray *lightray = new Ray();
       currLight->generateLightRay(intersect, lightray);
       if (!blockedByObject(lightray, currShape)) {
         currShape->intersectColor(intersect, currLight, cam, contribution);
         result += contribution;
       }
-    //return intersect.getShape()->intersectColor(intersect);
-
+      //return intersect.getShape()->intersectColor(intersect);
     }
-   
+
+    delete lightray;
+
     result += currShape->getEmission().getColors() + currShape->getAmbient().getColors();
 
     Ray reflect = Ray();
@@ -145,6 +146,7 @@ void RayTracer::trace(Ray r, int lvl, Color& outputColor)
     if (result[2] > 1.0) result[2] = 1.0;
     Color finalColor = Color(result.x, result.y, result.z);
     outputColor.setColors(finalColor);
+
     return;
 
   }
