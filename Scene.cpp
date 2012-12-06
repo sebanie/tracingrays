@@ -101,7 +101,7 @@ void Scene::render(){
   srand((unsigned) time(0));
   int i = 0; //private?
 
-# pragma omp parallel for private(curSample, r, dofray) num_threads(8)
+  # pragma omp parallel for private(curSample, r, dofray) num_threads(8)
   //while(sampler.getSample(&curSample)) {
   for (int sampleX = 0; sampleX < width; sampleX++) {
     for (int sampleY = 0; sampleY < height; sampleY++) {
