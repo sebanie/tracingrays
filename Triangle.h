@@ -17,6 +17,7 @@ class Triangle : public Shape{
     v3 = vert3;
     setMaterialProperties(a, d, s, e, shine);
     index = ind;
+    setBoundingBox();
   }
 
   Triangle() {}
@@ -50,6 +51,17 @@ class Triangle : public Shape{
       //std::cout << "bam" << std::endl;
       return Intersect();
     }
+  }
+  void setBoundingBox() {
+    vec3 minCoord, maxCoord;
+    for (int i = 0; i < 3; i++){ 
+      minCoord[i] = std::min(v1.getPoint()[i], std::min(v2.getPoint()[i], v3.getPoint()[i]));
+      maxCoord[i] = std::max(v1.getPoint()[i], std::max(v2.getPoint()[i], v3.getPoint()[i]));
+    }
+    boundingBox = Box(minCoord, maxCoord);
+    //std::cout << "Triangle Bounding Box Mins: " << "x -- " << boundingBox.getMin().x << "y -- " << boundingBox.getMin().y << "z -- " << boundingBox.getMin().z << std::endl;
+    //std::cout << "Triangle Bounding Box Maxs: " << "x -- " << boundingBox.getMax().x << "y -- " << boundingBox.getMax().y << "z -- " << boundingBox.getMax().z << std::endl;
+
   }
 };
 

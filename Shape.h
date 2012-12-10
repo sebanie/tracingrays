@@ -8,6 +8,8 @@ class Light;
 #include "Intersect.h"
 #include "Color.h"
 #include "Ray.h"
+#include "Box.h"
+#include <algorithm>
 
 using namespace std;
 
@@ -16,6 +18,7 @@ class Shape{
   Color diffuse, specular, emission, ambient;
   float shininess;
   float index;
+  Box boundingBox;
   
   void setMaterialProperties(Color a, Color d, Color s, Color e, float shine){
     ambient = a;
@@ -24,6 +27,9 @@ class Shape{
     emission = e;
     shininess = shine;
   }
+  //virtual void setBoundingBox() {
+  //  boundingBox = Box(vec3(0.0, 0.0, 0.0), vec3(0.0, 0.0, 0.0));
+  //}
  public:
   Shape() {}
   Color getAmbient(){
@@ -43,6 +49,9 @@ class Shape{
   }
   float getIndex(){
     return index;
+  }
+  Box getBoundingBox(){
+    return boundingBox;
   }
   virtual Intersect intersect(Ray r) = 0;
   void intersectColor(Intersect intersection, Light* currLight, vec3 camPosn, vec3 &result);

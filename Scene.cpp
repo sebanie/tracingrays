@@ -67,7 +67,7 @@ Scene::Scene(){
 
 void Scene::init()
 {
-
+  
   shapes = new vector<Shape *>();
   lights = new vector<Light *>();
   maxDepth = 5;
@@ -478,8 +478,8 @@ void Scene::parse(const char * filename)
     cerr << "Unable to Open Input Data File " << filename << "\n" ; 
     throw 2 ; 
   }
-
-  rt = new RayTracer(shapes, lights, camera->getCameraPos());
+  bvhTree = (Shape *) createBVHtree(*shapes);
+  rt = new RayTracer(shapes, lights, camera->getCameraPos(), bvhTree);
   film = new Film(height, width);
   
 

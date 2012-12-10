@@ -5,11 +5,12 @@
 #include <stdio.h>
 #include <math.h>
 
-RayTracer::RayTracer(vector<Shape *>* shapes, vector<Light *>* lights, vec3 camPosn)
+RayTracer::RayTracer(vector<Shape *>* shapes, vector<Light *>* lights, vec3 camPosn, Shape* bvhtree)
 {
   _shapes = shapes;
   _lights = lights;
   cam = camPosn;
+  bvhTree = bvhtree;
 }
 
 
@@ -154,7 +155,7 @@ void RayTracer::trace(Ray r, int lvl, Color& outputColor)
 //cout << "magic6" << endl;
   outputColor.setColors(black);
 }
-
+/*
 Intersect RayTracer::closestShape(Ray r){
 
   vector<Shape *>::iterator itStart = _shapes->begin();
@@ -171,7 +172,11 @@ Intersect RayTracer::closestShape(Ray r){
   }
   return closest;
 }
+*/
+Intersect RayTracer::closestShape(Ray r){
+  return bvhTree->intersect(r);
 
+}
 RayTracer::~RayTracer() {
 
 }

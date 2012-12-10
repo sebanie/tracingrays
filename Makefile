@@ -15,8 +15,8 @@ endif
 
 RM = /bin/rm -f 
 all: raytrace
-raytrace: test.o Film.o Camera.o Direction.o Point.o Ray.o RayTracer.o Sample.o Sampler.o Scene.o Shape.o PointLight.o DirLight.o Transform.o
-	$(CC) $(CFLAGS) -o raytrace test.o Film.o Camera.o Direction.o Point.o Ray.o RayTracer.o Sample.o Sampler.o Scene.o Shape.o PointLight.o DirLight.o Transform.o $(INCFLAGS) $(LDFLAGS) 
+raytrace: test.o Film.o Camera.o Direction.o Point.o Ray.o RayTracer.o Sample.o Sampler.o Scene.o Shape.o PointLight.o DirLight.o Transform.o Box.o BVHnode.o
+	$(CC) $(CFLAGS) -o raytrace test.o Film.o Camera.o Direction.o Point.o Ray.o RayTracer.o Sample.o Sampler.o Scene.o Shape.o PointLight.o DirLight.o Transform.o Box.o BVHnode.o $(INCFLAGS) $(LDFLAGS) 
 test.o: test.cpp Color.h Film.h
 	$(CC) $(CFLAGS) $(INCFLAGS) -c test.cpp
 RayTracer.h: Scene.h
@@ -24,10 +24,12 @@ Intersect.h: Scene.h
 Triangle.h: Shape.h
 Sphere.h: Shape.h
 TriNormal.h: Shape.h
-Scene.o: Scene.cpp Ray.h RayTracer.h Sample.h Sampler.h Point.h Direction.h Color.h Film.h Camera.h Intersect.h Shape.h Triangle.h Sphere.h TriNormal.h
+Scene.o: Scene.cpp Ray.h RayTracer.h Sample.h Sampler.h Point.h Direction.h Color.h Film.h Camera.h Intersect.h Shape.h Triangle.h Sphere.h TriNormal.h Box.h BVHnode.h
 	$(CC) $(CFLAGS) $(INCFLAGS) -c Scene.cpp 
 Film.o: Film.cpp Film.h Color.h
 	$(CC) $(CFLAGS) $(INCFLAGS) -c Film.cpp
+BVHnode.o: BVHnode.cpp Shape.h Ray.h Box.h Intersect.h
+	$(CC) $(CFLAGS) $(INCFLAGS) -c BVHnode.cpp 
 Camera.o: Camera.cpp Camera.h Sample.h Ray.h
 	$(CC) $(CFLAGS) $(INCFLAGS) -c Camera.cpp
 Direction.o: Direction.cpp 
@@ -36,7 +38,9 @@ Point.o: Point.cpp
 	$(CC) $(CFLAGS) $(INCFLAGS) -c Point.cpp
 Ray.o: Ray.cpp Point.h Direction.h
 	$(CC) $(CFLAGS) $(INCFLAGS) -c Ray.cpp
-RayTracer.o: RayTracer.cpp Scene.h Color.h Intersect.h
+Box.o: Box.cpp Ray.h
+	$(CC) $(CFLAGS) $(INCFLAGS) -c Box.cpp
+RayTracer.o: RayTracer.cpp Scene.h Color.h Intersect.h BVHnode.h
 	$(CC) $(CFLAGS) $(INCFLAGS) -c RayTracer.cpp
 Sample.o: Sample.cpp
 	$(CC) $(CFLAGS) $(INCFLAGS) -c Sample.cpp

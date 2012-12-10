@@ -10,6 +10,7 @@ class RayTracer;
 #include "Sampler.h"
 #include "Point.h"
 #include "Light.h"
+#include "BVHnode.h"
 #include "PointLight.h"
 #include "DirLight.h"
 #include "Shape.h"
@@ -20,6 +21,7 @@ class RayTracer;
 #include "RayTracer.h"
 #include "Intersect.h"
 #include "Direction.h"
+#include "Box.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -38,6 +40,7 @@ class Scene
  private:
   vector<Shape *>* shapes;
   vector<Light *>* lights;
+  Shape *bvhTree;
   int width, height;
   float fovx, fovy;
   vec3 cameraPos, lookAt, upVector;
@@ -82,6 +85,9 @@ class Scene
   }
   int getMaxDepth(){
     return maxDepth;
+  }
+  Shape * getTree() {
+    return bvhTree;
   }
   vector<Shape *>* getShapes(){
     return shapes;

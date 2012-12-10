@@ -25,6 +25,8 @@ class Sphere : public Shape{
     matrix = transf;
     inverse = glm::inverse(transf);
     index = ind;
+    //std::cout << "hello" << std::endl;
+    setBoundingBox();
     //std::cout << inverse[2][2] << std::endl;
   }
 
@@ -94,6 +96,33 @@ class Sphere : public Shape{
     vec3 normal = vec3(glm::transpose(inverse) * (vec4(pt, 1.0) - vec4(center.getPoint(), 1.0)));
     return glm::normalize(normal);
   }
+  
+  void setBoundingBox() {
+    //std::cout << "whoosh" << std::endl;
+    vec4 bounds[8];
+    vec3 sphereCenter = center.getPoint();
+    bounds[0] = matrix * vec4((sphereCenter + vec3(radius, radius, radius)), 1);
+    bounds[1] = matrix * vec4((sphereCenter + vec3(radius, radius, -radius)), 1);
+    bounds[2] = matrix * vec4((sphereCenter + vec3(radius, -radius, radius)), 1);
+    bounds[3] = matrix * vec4((sphereCenter + vec3(radius, -radius, -radius)), 1);
+    bounds[4] = matrix * vec4((sphereCenter + vec3(-radius, radius, radius)), 1);
+    bounds[5] = matrix * vec4((sphereCenter + vec3(-radius, radius, -radius)), 1);
+    bounds[6] = matrix * vec4((sphereCenter + vec3(-radius, -radius, radius)), 1);
+    bounds[7] = matrix * vec4((sphereCenter + vec3(-radius, -radius, -radius)), 1);
+    vec3 minCoord, maxCoord;
+    minCoord = vec3(bounds[0]);
+    maxCoord = vec3(bounds[0]);
+    for (int i = 0; i < 3; i++){
+      for (int j = 1; j < 8; j++){
+	minCoord[i] = min(minCoord[i], bounds[j][i]);
+	maxCoord[i] = max(maxCoord[i], bounds[j][i]);
+      }
+    }
+    boundingBox = Box(minCoord, maxCoord);
+    //std::cout << "Sphere Bounding Box Mins: " << "x -- " << boundingBox.getMin().x << "y -- " << boundingBox.getMin().y << "z -- " << boundingBox.getMin().z << std::endl;
+    //std::cout << "Sphere Bounding Box Maxs: " << "x -- " << boundingBox.getMax().x << "y -- " << boundingBox.getMax().y << "z -- " << boundingBox.getMax().z << std::endl;
+  }
+    
 
 };
 

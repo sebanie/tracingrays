@@ -20,6 +20,7 @@ class TriNormal : public Shape{
 		d2 = vn2;
 		d3 = vn3;
     setMaterialProperties(a, d, s, e, shine);
+    setBoundingBox();
   }
 
   TriNormal() {}
@@ -62,6 +63,15 @@ class TriNormal : public Shape{
       return Intersect();
     }
   }
+  void setBoundingBox() {
+    vec3 minCoord, maxCoord;
+    for (int i = 0; i < 3; i++){
+      minCoord[i] = std::min(v1.getPoint()[i], std::min(v2.getPoint()[i], v3.getPoint()[i]));
+      maxCoord[i] = std::max(v1.getPoint()[i], std::max(v2.getPoint()[i], v3.getPoint()[i]));
+    }
+    boundingBox = Box(minCoord, maxCoord);
+  }
+
 };
 
 #endif
