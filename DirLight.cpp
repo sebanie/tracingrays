@@ -21,7 +21,7 @@ void DirLight::generateLightRay(Intersect &inters, Ray *ray)
 	vec3 rayDir = glm::normalize(_dir.getDir());
 	ray->setDir(_dir);
 
-	vec3 lraypt = inters.getPosition().getPoint() + (0.0001f * rayDir);
+	vec3 lraypt = inters.getPosition().getPoint() + (0.001f * rayDir);
 	ray->setPoint(Point(lraypt));
 
 	ray->setTMIN(0.000000);

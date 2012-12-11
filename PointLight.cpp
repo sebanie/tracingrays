@@ -19,7 +19,7 @@ void PointLight::generateLightRay(Intersect &inters, Ray *ray)
         Direction temp(rayDir);
 	ray->setDir(temp);
 
-	vec3 lraypt = inters.getPosition().getPoint() + (0.0001f * rayDir);
+	vec3 lraypt = inters.getPosition().getPoint() + (0.001f * rayDir);
 	ray->setPoint(Point(lraypt));
 
         float tmax = lightminuseye.x /rayDir.x;
