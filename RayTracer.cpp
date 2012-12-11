@@ -16,17 +16,18 @@ RayTracer::RayTracer(vector<Shape *>* shapes, vector<Light *>* lights, vec3 camP
 
 
 bool RayTracer::blockedByObject(Ray *r, Shape* shape){
-  vector<Shape *>::iterator itStart = _shapes->begin();
-  vector<Shape *>::iterator itEnd = _shapes->end();
-  for(;itStart != itEnd; itStart++){
-    Shape *current = *itStart;
-    if (current != shape) {
-      Intersect curr = (*itStart)->intersect(*r);
-      if (curr.isHit() && (curr.getT() < r->getTMAX())) {
-	return true;
-      }
-    }
+  //vector<Shape *>::iterator itStart = _shapes->begin();
+  //vector<Shape *>::iterator itEnd = _shapes->end();
+  Intersect curr = closestShape(*r);
+  //for(;itStart != itEnd; itStart++){
+  //  Shape *current = *itStart;
+    //if (current != shape) {
+  //Intersect curr = (*itStart)->intersect(*r);
+  if (curr.isHit() && (curr.getT() < r->getTMAX())) {
+	  return true;
   }
+    //}
+  //}
   return false;
 }
 

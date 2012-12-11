@@ -34,7 +34,48 @@ Intersect BVHnode::intersect(Ray r){
     return Intersect();
   }
 }
+/*
+bool BVHnode::shadowIntersect(Ray r){
+  if (!boundingBox.isHit(r)){
+    return Intersect();
+  }
+  Intersect leftIntersect = Intersect();
+  Intersect rightIntersect = Intersect();
+  double distLeft, distRight;
 
+  if (left != NULL){
+    leftIntersect = left->shadowIntersect(r);
+		if(leftIntersect.isHit() && (leftIntersect.getT() < r->getTMAX())){
+			return true;
+		}
+  }
+  if (right != NULL){
+    rightIntersect = right->shadowIntersect(r);
+		if(rightIntersect.isHit() && (rightIntersect.getT() < r->getTMAX())){
+			return true;
+		}
+  }
+  if (leftIntersect.isHit() || rightIntersect.isHit()){
+    distLeft = glm::length((leftIntersect.getPosition().getPoint() - r.getPos()));
+    distRight = glm::length((rightIntersect.getPosition().getPoint() - r.getPos()));
+    if (distLeft < distRight){
+      return leftIntersect;
+    }
+    else {
+      return rightIntersect;
+    }
+  }
+  else if (leftIntersect.isHit()){
+    return leftIntersect;
+  }
+  else if (rightIntersect.isHit()){
+    return rightIntersect;
+  }
+  else {
+    return Intersect();
+  }
+}
+*/
 Box mergeBoxes(vector<Shape *> &shapes){
   vector<Shape *>::iterator i = shapes.begin();
   vector<Shape *>::iterator end = shapes.end();
