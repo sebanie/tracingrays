@@ -24,8 +24,8 @@ class RayTracer{
   bool blockedByObject(Ray *r, Shape* shape);
  public:
   RayTracer(vector<Shape *>* shapes, vector<Light *>* lights, vec3 camPosn, Shape* bvhtree);
-	void trace(Ray r, int lvl, Color &color);
-	Intersect closestShape(Ray r);
+  void trace(Ray r, int lvl, Color &color);
+  Intersect closestShape(Ray r);
   ~RayTracer(void);
 };
 

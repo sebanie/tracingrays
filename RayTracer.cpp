@@ -16,18 +16,18 @@ RayTracer::RayTracer(vector<Shape *>* shapes, vector<Light *>* lights, vec3 camP
 
 
 bool RayTracer::blockedByObject(Ray *r, Shape* shape){
-  //vector<Shape *>::iterator itStart = _shapes->begin();
-  //vector<Shape *>::iterator itEnd = _shapes->end();
-  Intersect curr = closestShape(*r);
-  //for(;itStart != itEnd; itStart++){
-  //  Shape *current = *itStart;
-    //if (current != shape) {
-  //Intersect curr = (*itStart)->intersect(*r);
-  if (curr.isHit() && (curr.getT() < r->getTMAX())) {
-	  return true;
+  // Intersect curr = closestShape(*r);
+  vector<Shape *>::iterator itStart = _shapes->begin();
+  vector<Shape *>::iterator itEnd = _shapes->end();
+  for(;itStart != itEnd; itStart++){
+   Shape *current = *itStart;
+    if (current != shape) {
+      Intersect curr = (*itStart)->intersect(*r);
+      if (curr.isHit() && (curr.getT() < r->getTMAX())) {
+    	  return true;
+      }
+    }
   }
-    //}
-  //}
   return false;
 }
 
@@ -74,8 +74,6 @@ void RayTracer::trace(Ray r, int lvl, Color& outputColor)
 
     vec3 norm = glm::normalize(intersect.getNormal().getDir());
     vec3 incident = glm::normalize(r.getDir());
-    //vec3 reflectedDir = 2*glm::dot(norm, glm::normalize(r.getDir())) * norm;
-    //reflectedDir = glm::normalize(r.getDir() - reflectedDir);
 
     vec3 reflectedDir = glm::normalize(glm::reflect(incident, norm));
 
@@ -97,7 +95,6 @@ void RayTracer::trace(Ray r, int lvl, Color& outputColor)
         currShape->intersectColor(intersect, currLight, cam, contribution);
         result += contribution;
       }
-      //return intersect.getShape()->intersectColor(intersect);
     }
 
     delete lightray;
@@ -112,7 +109,7 @@ void RayTracer::trace(Ray r, int lvl, Color& outputColor)
     trace(reflect, lvl - 1, reflectedCol);
 
 
-    // REFRACTION STUFF STARTS HERE
+    // REFRACTION 
 
     Color refractedCol = Color(0, 0, 0);
     if (currShape->getIndex() != 0.0) {
@@ -121,27 +118,21 @@ void RayTracer::trace(Ray r, int lvl, Color& outputColor)
       float index1 = r.getIndex();
       float index2 = currShape->getIndex();
       if (index1 != 1.0) {
-	index2 = 1.0;
-	normal = -normal;
+      	index2 = 1.0;
+      	normal = -normal;
       }
       if (refract(normal, incident, index1, index2, refractRay)) {
-	refractRay.setPoint
-	  ( Point( intersect.getPosition().getPoint() + 0.001f * refractRay.getDir() ) );
-	trace(refractRay, lvl - 1, refractedCol);
-	float s = glm::length(intersect.getPosition().getPoint() - r.getPos());
-	float beer = exp( - log(1.1) * s);\
-	refractedCol *= beer;
+      	refractRay.setPoint( Point( intersect.getPosition().getPoint() + 0.001f * refractRay.getDir() ) );
+      	trace(refractRay, lvl - 1, refractedCol);
+      	float s = glm::length(intersect.getPosition().getPoint() - r.getPos());
+      	float beer = exp( - log(1.1) * s);\
+      	refractedCol *= beer;
       }
     }
 
 
-    /////////////////////////
-    
-
     result += (currShape->getSpecular().getColors() * reflectedCol.getColors());
     result += refractedCol.getColors();
-
-    //cout << "result stuff: " << result.x << " " << result.y << " " << result.z << endl;
 
     if (result[0] > 1.0) result[0] = 1.0;
     if (result[1] > 1.0) result[1] = 1.0;
@@ -153,27 +144,9 @@ void RayTracer::trace(Ray r, int lvl, Color& outputColor)
 
   }
 
-//cout << "magic6" << endl;
   outputColor.setColors(black);
 }
-/*
-Intersect RayTracer::closestShape(Ray r){
 
-  vector<Shape *>::iterator itStart = _shapes->begin();
-  vector<Shape *>::iterator itEnd = _shapes->end();
-  
-  Intersect closest = Intersect();
-  for(;itStart != itEnd; itStart++){
-    Intersect currentIntersect = (*itStart)->intersect(r);
-    if(currentIntersect.isHit()){
-      if(currentIntersect.getT() < closest.getT()){
-	closest = currentIntersect;
-      }
-    }
-  }
-  return closest;
-}
-*/
 Intersect RayTracer::closestShape(Ray r){
   return bvhTree->intersect(r);
 

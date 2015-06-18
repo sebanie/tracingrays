@@ -26,7 +26,6 @@ class TriNormal : public Shape{
   TriNormal() {}
 
   Intersect intersect(Ray r){
-  //cout << "meme, it was a triangle!" << endl;
 
     vec3 a = v1.getPoint();
     vec3 b = v2.getPoint();
@@ -39,14 +38,11 @@ class TriNormal : public Shape{
     vec3 normal = glm::normalize(glm::cross((b - a), (c - a)));
     float t = glm::dot((a - r.getPos()), normal) / glm::dot(r.getDir(), normal);
     if(t < 0.0){
-      //std::cout << "hey booiiiii" << std::endl;
       return Intersect();
     }
 
     vec3 intersectPoint = r.getPos() + t*r.getDir();
    
-    // if INTERSECTPOINT is within triangle, then these cross products should
-    // return vectors that face the same direction as NORMAL
     if ( (glm::dot(glm::cross(b - a, intersectPoint - a), normal) >= 0.0) &&
 	 (glm::dot(glm::cross(c - b, intersectPoint - b), normal) >= 0.0) &&
 	 (glm::dot(glm::cross(a - c, intersectPoint - c), normal) >= 0.0) ) {
@@ -59,7 +55,7 @@ class TriNormal : public Shape{
 			vec3 intersectNormal = vec3(alpha*a_n + beta*b_n + gamma*c_n);
       return Intersect(Point(intersectPoint), Direction(intersectNormal), (Shape *)this, t);
     } else {
-      //std::cout << "bam" << std::endl;
+
       return Intersect();
     }
   }

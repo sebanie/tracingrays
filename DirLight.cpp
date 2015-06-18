@@ -18,10 +18,10 @@ vec3 DirLight::getDirection(Point ignored) {
 
 void DirLight::generateLightRay(Intersect &inters, Ray *ray)
 {
-	vec3 rayDir = glm::normalize(_dir.getDir());
-	ray->setDir(_dir);
+	Direction rayDir = Direction(glm::normalize(-1 * _dir.getDir()));
+	ray->setDir(rayDir);
 
-	vec3 lraypt = inters.getPosition().getPoint() + (0.001f * rayDir);
+	vec3 lraypt = inters.getPosition().getPoint() + (0.001f * rayDir.getDir());
 	ray->setPoint(Point(lraypt));
 
 	ray->setTMIN(0.000000);

@@ -25,30 +25,21 @@ class Sphere : public Shape{
     matrix = transf;
     inverse = glm::inverse(transf);
     index = ind;
-    //std::cout << "hello" << std::endl;
     setBoundingBox();
-    //std::cout << inverse[2][2] << std::endl;
   }
 
   Sphere(){}
 
   Intersect intersect(Ray r){
-//cout << "no, it was a sphere!" << endl;
 
     Ray transfRay = r.transform(inverse);
 
     vec3 centerPoint = center.getPoint();
-    //float a = glm::dot(r.getDir(), r.getDir());
-    //float b = glm::dot(r.getDir()*vec3(2), (r.getPos()-centerPoint));
-    //float c = glm::dot((r.getPos()-centerPoint),(r.getPos()-centerPoint)) - pow(radius,2.0);
-
 
     float a = glm::dot(transfRay.getDir(), transfRay.getDir());
     float b = glm::dot(transfRay.getDir()*vec3(2), (transfRay.getPos()-centerPoint));
     float c = glm::dot((transfRay.getPos()-centerPoint),(transfRay.getPos()-centerPoint)) - pow(radius,2.0);
 
-    //vec3 normal = glm::cross((b - a), (c - a));
-    //vec3 normal = centerPoint;
     float discriminant = pow(b,2.0) - 4.0 * a * c;
     if (discriminant < 0.0){
       return Intersect();
@@ -58,10 +49,10 @@ class Sphere : public Shape{
     float t2= (-b - sqrt(discriminant))/2*a;
     if(t1 > 0.0 && t2 > 0.0){
       if(t1 <= t2){
-	t = t1;
+      	t = t1;
       }
       else{
-	t = t2;
+      	t = t2;
       }
     }
     else if (t1 > 0.0){
@@ -76,19 +67,15 @@ class Sphere : public Shape{
 
     vec3 intersectPoint = transfRay.getPos() + t*transfRay.getDir();
 
-
     vec3 normal = glm::normalize(intersectPoint - centerPoint);
 
     normal = glm::normalize(vec3(glm::transpose(inverse) * vec4(normal, 0.0)));
-
 
     intersectPoint = vec3(matrix * vec4(intersectPoint, 1.0));
 
     float worldt = (intersectPoint - r.getPos()).x / r.getDir().x;
     
-   
-    // if INTERSECTPOINT is within triangle, then these cross products should
-    // return vectors that face the same direction as NORMAL
+  
     return Intersect(Point(intersectPoint), Direction(normal), (Shape *)this, worldt);
   }
 
@@ -98,7 +85,6 @@ class Sphere : public Shape{
   }
   
   void setBoundingBox() {
-    //std::cout << "whoosh" << std::endl;
     vec4 bounds[8];
     vec3 sphereCenter = center.getPoint();
     bounds[0] = matrix * vec4((sphereCenter + vec3(radius, radius, radius)), 1);
@@ -114,13 +100,11 @@ class Sphere : public Shape{
     maxCoord = vec3(bounds[0]);
     for (int i = 0; i < 3; i++){
       for (int j = 1; j < 8; j++){
-	minCoord[i] = min(minCoord[i], bounds[j][i]);
-	maxCoord[i] = max(maxCoord[i], bounds[j][i]);
+      	minCoord[i] = min(minCoord[i], bounds[j][i]);
+      	maxCoord[i] = max(maxCoord[i], bounds[j][i]);
       }
     }
     boundingBox = Box(minCoord, maxCoord);
-    //std::cout << "Sphere Bounding Box Mins: " << "x -- " << boundingBox.getMin().x << "y -- " << boundingBox.getMin().y << "z -- " << boundingBox.getMin().z << std::endl;
-    //std::cout << "Sphere Bounding Box Maxs: " << "x -- " << boundingBox.getMax().x << "y -- " << boundingBox.getMax().y << "z -- " << boundingBox.getMax().z << std::endl;
   }
     
 

@@ -67,7 +67,7 @@ Camera::Camera(vec3 lookfrom, vec3 lookat, vec3 up, float fovy, int height, int 
   _width = width;
 
   float z = (1 / tan(_fovy / 2.0)) * ((float) height / 2.0);
-  //check for z==0
+  // still need to check for z==0
   _fovx = 2 * atan(((float) width / 2.0) / z);
 
   w = glm::normalize(_lookfrom - _lookat);

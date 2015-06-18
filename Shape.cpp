@@ -1,38 +1,8 @@
 #include "Shape.h"
 #include "Scene.h"
 
-/*
-
-Intersect Shape::intersect(Ray r){
-    return Intersect();
-  }
-
-
-
-bool Shape::blockedByObject(Ray *r){
-	//vector<Shape *>* sceneShapes = scene.getShapes();
-	vector<Shape *>::iterator itStart = scene.getShapes()->begin();
-	vector<Shape *>::iterator itEnd = scene.getShapes()->end();
-	//vector<Shape *> sceneShapes = scene.getShapes();
-	//cout << "checking for blocked" << endl;
-	for(;itStart != itEnd; itStart++){
-		Shape *current = *itStart;
-		//std::cout << "i am a " << this << " compared to " << current << std::endl;
-		if ( (current != this) &&
-		     (*itStart)->intersect(*r).isHit() ) {
-			//std::cout << "i am blocked" << std::endl;
-			return true;
-		}
-	}
-	return false;
-}
-
-*/
 
 void Shape::intersectColor(Intersect intersection, Light* currLight, vec3 cam, vec3 &result){
-  // if(!intersection.isHit()){
-  //  return ambient;
- // }
 
   vec3 currLightColor = currLight->getColor().getColors();
 

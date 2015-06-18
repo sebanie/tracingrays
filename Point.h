@@ -29,7 +29,6 @@ class Point
   float z(void);
   void add(Direction *dir, Point &result);
   float dist(vec3 pt);
-  //Direction* operator-(const Point* pt);
 };
 
 

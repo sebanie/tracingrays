@@ -64,9 +64,6 @@ class Color{
   }
   Color operator+=(const Color &param){
     rgbValues += param.rgbValues;
-    //if (rgbValues[0] > 1.0) rgbValues[0] = 1.0;
-    //if (rgbValues[1] > 1.0) rgbValues[1] = 1.0;
-    //if (rgbValues[2] > 1.0) rgbValues[2] = 1.0;
     return *this;
   }
   Color operator*=(float scalar){

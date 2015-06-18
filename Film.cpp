@@ -15,9 +15,7 @@ Color Film::getPixel(int x, int y){
   return pixelData[y][x];
 }
 void Film::put(Sample pixel, Color pixelColor){
-  //cout << "yoyo ma man" << endl;
-  pixelData[pixel.y()][pixel.x()] = pixelColor;//Color(0, 1, 0);
-  //cout << "out of your mind" << endl;
+  pixelData[pixel.y()][pixel.x()] = pixelColor;
 }
 void Film::output(string path){
   int maxIntensity = 255;

@@ -23,7 +23,6 @@ class Camera
   int _height, _width;
   vec3 w, u, v;
   float halfwidth, halfheight;
-  //mat4 cam2world, world2cam;
   
  public:
   Camera(void);

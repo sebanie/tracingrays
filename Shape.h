@@ -27,9 +27,6 @@ class Shape{
     emission = e;
     shininess = shine;
   }
-  //virtual void setBoundingBox() {
-  //  boundingBox = Box(vec3(0.0, 0.0, 0.0), vec3(0.0, 0.0, 0.0));
-  //}
  public:
   Shape() {}
   Color getAmbient(){

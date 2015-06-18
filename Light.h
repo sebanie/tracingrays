@@ -18,15 +18,15 @@ class Light{
 		Color getColor() {
 			return lightColor;
 		}
-                void setAttenuation(vec3 atten) {
+            void setAttenuation(vec3 atten) {
 			attenuation = atten;
 		}
-                vec3 getAttenuation() {
+            vec3 getAttenuation() {
 			return attenuation;
 		}
                 virtual vec3 getPosition(void) = 0;
 
-		virtual vec3 getDirection(Point) = 0;// { return vec3(0, 0, 0); }
+		virtual vec3 getDirection(Point) = 0;
 		virtual void generateLightRay(Intersect &inters, Ray *ray) = 0;
 };
 
